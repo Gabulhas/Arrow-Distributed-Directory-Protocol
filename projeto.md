@@ -48,7 +48,7 @@ Give Access:
 
 2. Transforma-se em **Owner with Request**
 
-`OwnerWithRequest(find, MyChan, WaiterChan, NewLink, Obj)`
+`OwnerWithRequest(find, MyChan, Obj, NewLink, WaiterChan)`
 
 
 #### Atributos do Owner Terminal:
@@ -181,12 +181,11 @@ Give Access:
 
 3. Continua a ser **Waiter With Request** mas atualiza o **Link** para **NewLink**.
 
-`WaiterWithRequest(find, MyChan, Obj, NewLink, WaiterChan)`
+`WaiterWithRequest(find, MyChan, NewLink, WaiterChan)`
 
 
 #### Atributos do Waiter Terminal:
 - **find** - Channel onde recebe pedidos.
 - **MyChan** - Channel do Node.
-- **Obj** - o Objecto. 
 - **Link** - Ligação para o child **Node**.
 - **WaiterChan** - Channel de quem fez o pedido de acesso.
