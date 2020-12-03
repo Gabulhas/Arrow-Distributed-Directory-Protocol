@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"projeto/Channels"
 	"strings"
 )
 
@@ -29,7 +28,7 @@ func runCommand(command string) {
 		OutputState()
 		break
 	case cmd == "req": //cria request para o objeto
-		makeRequest()
+		Request()
 		break
 
 	case cmd == "give_obj":
@@ -41,17 +40,5 @@ func runCommand(command string) {
 		break
 
 	}
-
-}
-
-//Mudar esta função de ficheiro
-func makeRequest() {
-	accessRequest := Channels.AccessRequest{
-		GiveAccess: Channels.GiveAccess{
-			WaiterChan: Node.MyChan,
-		},
-		Link: Node.Find,
-	}
-	go SendThroughLink(accessRequest)
 
 }

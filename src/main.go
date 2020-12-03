@@ -6,13 +6,13 @@ import (
 	"os"
 	"projeto/Channels"
 	"projeto/Nodes"
-	"projeto/utils"
 	"strconv"
 )
 
 var Node *Nodes.Node
 var find chan Channels.AccessRequest
 var myChan chan Channels.GiveAccess
+var typeChange chan Nodes.NodeType
 
 func main() {
 	Node = new(Nodes.Node)
@@ -21,8 +21,9 @@ func main() {
 
 	find = make(chan Channels.AccessRequest, 10)
 	myChan = make(chan Channels.GiveAccess, 10)
+	typeChange = make(chan Nodes.NodeType)
 
-	go chanHandler()
+	go ChanHandler()
 	go ShellStart()
 	startServer()
 }
@@ -50,19 +51,5 @@ func initNode() {
 
 	if Node.Type == Nodes.OWNER_TERMINAL || Node.Type == Nodes.OWNER_WITH_REQUEST {
 		Node.Obj = true
-	}
-}
-
-func chanHandler() {
-	for {
-		select {
-		case findReq := <-find:
-			HandleFind(findReq)
-			break
-		case myChanReq := <-myChan:
-			fmt.Printf("%s", utils.Struct_to_string(myChanReq))
-
-
-		}
 	}
 }
