@@ -12,7 +12,6 @@ import (
 var Node *Nodes.Node
 var find chan Channels.AccessRequest
 var myChan chan Channels.GiveAccess
-var typeChange chan Nodes.NodeType
 
 func main() {
 	Node = new(Nodes.Node)
@@ -21,7 +20,6 @@ func main() {
 
 	find = make(chan Channels.AccessRequest, 10)
 	myChan = make(chan Channels.GiveAccess, 10)
-	typeChange = make(chan Nodes.NodeType)
 
 	go ChanHandler()
 	go ShellStart()

@@ -20,19 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/simples.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/findChan.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shell.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Nodes/Node.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/Node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projeto.exe" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeBehaviours.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nodeChannels.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeChannels.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/projeto.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
