@@ -31,6 +31,9 @@ func main() {
 func initNode() {
 	args := os.Args[1:]
 
+	fmt.Printf("All args")
+	fmt.Println(args)
+
 	if len(args) < 2 {
 		fmt.Printf("Required arguments")
 		os.Exit(-1)
@@ -52,4 +55,14 @@ func initNode() {
 	if Node.Type == Nodes.OWNER_TERMINAL || Node.Type == Nodes.OWNER_WITH_REQUEST {
 		Node.Obj = true
 	}
+}
+
+//esta parte também comunicará com a visualização
+func OutputState() {
+	fmt.Printf("\n---------------------State-------------------")
+	fmt.Printf("\nMy Address:%s", Node.MyAddress)
+	fmt.Printf("\nLink:%s", Node.Link)
+	fmt.Printf("\nWaiter Chan:%s", Node.WaiterChan)
+	fmt.Printf("\nCurrent State : %s", Node.Type.String())
+	fmt.Printf("\n---------------------------------------------")
 }

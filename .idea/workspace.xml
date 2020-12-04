@@ -20,12 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Channels/channels.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nodes/Node.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testes.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simples.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/findChan.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/Node.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/Node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeBehaviours.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nodeChannels.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeChannels.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/projeto.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +70,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\src" />
       <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\Channels" />
       <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\Nodes" />
     </key>
@@ -103,38 +111,38 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606348668978">
+    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1607034175288">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1606348668978" />
+    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1607034175288" />
     <state x="690" y="272" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606246415709">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="690" y="272" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1606246415709" />
-    <state width="914" height="285" key="GridCell.Tab.0.bottom" timestamp="1606350671129">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom" timestamp="1607015099633">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="914" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1606350671129" />
-    <state width="914" height="285" key="GridCell.Tab.0.center" timestamp="1606350671129">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1607015099633" />
+    <state width="1877" height="284" key="GridCell.Tab.0.center" timestamp="1607015099628">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="914" height="285" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1606350671129" />
-    <state width="914" height="285" key="GridCell.Tab.0.left" timestamp="1606350671129">
+    <state width="1877" height="284" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1607015099628" />
+    <state width="1877" height="284" key="GridCell.Tab.0.left" timestamp="1607015099613">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="914" height="285" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1606350671129" />
-    <state width="914" height="285" key="GridCell.Tab.0.right" timestamp="1606350671129">
+    <state width="1877" height="284" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1607015099613" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right" timestamp="1607015099628">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="914" height="285" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1606350671129" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1607015099628" />
     <state x="2381" y="170" key="SettingsEditor" timestamp="1606244815234">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
     <state x="2381" y="170" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1606244815234" />
-    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1606350497787">
+    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1607041051617">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1606350497787" />
+    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1607041051617" />
     <state x="268" y="0" width="1558" height="1037" maximized="true" key="dock-window-1" timestamp="1606336063149">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

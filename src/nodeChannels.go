@@ -12,7 +12,8 @@ func ChanHandler() {
 			HandleFind(findReq)
 			break
 		case myChanReq := <-myChan:
-			fmt.Printf("%s", utils.StructToString(myChanReq))
+			fmt.Printf("\nGot the object. %s", utils.StructToString(myChanReq))
+			ReceiveObj(myChanReq)
 		}
 
 	}

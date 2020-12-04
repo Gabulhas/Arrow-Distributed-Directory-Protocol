@@ -20,12 +20,14 @@ func (node *Node) OwnerTerminal() {
 	node.Type = OWNER_TERMINAL
 	node.Link = ""
 	node.Obj = true
+	node.WaiterChan = ""
 
 }
 
 func (node *Node) Idle(newLink string) {
 	node.Type = IDLE
 	node.Link = newLink
+	node.WaiterChan = ""
 }
 
 func (node *Node) WaiterWithRequest(newLink string, waiterChan string) {

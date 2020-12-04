@@ -15,7 +15,7 @@ import (
 func startServer() {
 	r := mux.NewRouter()
 	r.HandleFunc("/find", findRoute).Methods("POST")
-	r.HandleFunc("/mychan", myChanRoute).Methods("POST")
+	r.HandleFunc("/myChan", myChanRoute).Methods("POST")
 	http.ListenAndServe(Node.MyAddress, r)
 }
 func findRoute(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +26,7 @@ func findRoute(w http.ResponseWriter, r *http.Request) {
 	var accessRequest Channels.AccessRequest
 	_ = json.NewDecoder(r.Body).Decode(&accessRequest)
 	fmt.Printf("\nGot a find request")
+	fmt.Printf("\n%s", utils.StructToString(accessRequest))
 
 	find <- accessRequest
 
@@ -41,6 +42,7 @@ func myChanRoute(w http.ResponseWriter, r *http.Request) {
 	var giveAccess Channels.GiveAccess
 	_ = json.NewDecoder(r.Body).Decode(&giveAccess)
 	fmt.Printf("\nGot Access To The Object!")
+	fmt.Printf("\n%s", utils.StructToString(giveAccess))
 
 	myChan <- giveAccess
 
@@ -48,40 +50,24 @@ func myChanRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func SendThroughLink(accessRequest Channels.AccessRequest) {
+	fmt.Printf("\nSending %s", utils.StructToString(accessRequest))
+	sendDataTo(Node.Link, accessRequest)
 
-	fmt.Printf("Sending %s", utils.StructToString(accessRequest))
-
-	message, err := json.Marshal(accessRequest)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	resp, err := http.Post(Node.Link, "application/json", bytes.NewBuffer(message))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Printf(string(body))
 }
 
 //Isto poderá ser simplificado, pois estas duas funções têm o mesmo corpo, usar interface{}
 func SendObjectAccess(giveAccess Channels.GiveAccess) {
+	sendDataTo(Node.WaiterChan, giveAccess)
+}
 
-	fmt.Printf("Sending %s", utils.StructToString(giveAccess))
+func sendDataTo(channel string, data interface{}) string {
 
-	message, err := json.Marshal(giveAccess)
+	message, err := json.Marshal(data)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	resp, err := http.Post(Node.WaiterChan, "application/json", bytes.NewBuffer(message))
+	resp, err := http.Post(channel, "application/json", bytes.NewBuffer(message))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,11 +79,6 @@ func SendObjectAccess(giveAccess Channels.GiveAccess) {
 		log.Fatal(err)
 	}
 
-	log.Printf(string(body))
-}
+	return string(body)
 
-//esta parte também comunicará com a visualização
-func OutputState() {
-	fmt.Printf("Node: %s", utils.StructToString(Node))
-	fmt.Printf("\nCurrent State : %s", Node.Type.String())
 }
