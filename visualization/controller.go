@@ -11,10 +11,9 @@ func startServer() {
 
 	r := mux.NewRouter()
 
-	http.Handle("/assets/", http.StripPrefix(
-		"/assets/",
-		http.FileServer(http.Dir("assets")),
-	))
+	fs := http.FileServer(http.Dir("./assets/"))
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
+
 
 	r.HandleFunc("/", root).Methods("GET")
 	r.HandleFunc("/data", data).Methods("GET")
@@ -35,6 +34,14 @@ func root(w http.ResponseWriter, r *http.Request) {
 
 func data(w http.ResponseWriter, r *http.Request) {
 
+	//temporario
+	tmpl, err := template.ParseFiles("./assets/testdata.json")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusFound)
+	}
+	if err := tmpl.ExecuteTemplate(w, tmpl.Name(), nil); err != nil {
+		log.Fatalf("homeHandler: %+v", err)
+	}
 
 }
 
