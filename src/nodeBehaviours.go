@@ -9,6 +9,9 @@ import (
 )
 
 func HandleFind(accessRequest Channels.AccessRequest) {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
 	newAccessRequest := accessRequest
 
 	switch Node.Type {
@@ -31,15 +34,21 @@ func HandleFind(accessRequest Channels.AccessRequest) {
 		Node.WaiterWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
 		break
 	case Nodes.WAITER_WITH_REQUEST:
+		newAccessRequest.Link = Node.Find
+		SendThroughLink(newAccessRequest)
 		Node.WaiterWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
 		break
 	}
+
+	go utils.UpdateVisualization(*Node, visualization_address)
 
 }
 
 func releaseObj() {
 
-	randomSleep := utils.RandomRange(10, 40)
+	Mutex.Lock()
+
+	randomSleep := utils.RandomRange(1, 2)
 
 	fmt.Printf("\nReleasing the Object in %d seconds.", randomSleep)
 
@@ -51,21 +60,29 @@ func releaseObj() {
 	accessObject := Channels.GiveAccess{WaiterChan: Node.WaiterChan}
 	SendObjectAccess(accessObject)
 	Node.Idle(Node.Link)
+
+	Mutex.Unlock()
 	autoRequest()
+
+	go utils.UpdateVisualization(*Node, visualization_address)
 
 }
 
 //Arranjar forma de correr isto sempre que o node passar a ser Idle, talvez com channels
 func autoRequest() {
 	go func() {
-		utils.RandomSleep(time.Minute, 20, 100)
+		randomSleep := utils.RandomRange(15, 35)
+		fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
+
+		time.Sleep(time.Second * time.Duration(randomSleep))
 		Request()
 	}()
 }
 
-//Isto também poderá funcionar manualmente, mas para simulação irá correr de forma aleatória, por agora
-//Implementar forma de detetar mudanças de estado sem repetição de código
 func Request() {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
 	if Node.Type != Nodes.IDLE {
 		fmt.Printf("Can't request an object if not Idle.")
 		return
@@ -79,10 +96,14 @@ func Request() {
 	}
 	SendThroughLink(accessRequest)
 	Node.WaiterTerminal()
+
+	go utils.UpdateVisualization(*Node, visualization_address)
 }
 
 //Adicionar node externo que contém o objeto
 func ReceiveObj(giveAccess Channels.GiveAccess) {
+	Mutex.Lock()
+	defer Mutex.Unlock()
 
 	switch Node.Type {
 	case Nodes.WAITER_TERMINAL:
@@ -93,5 +114,7 @@ func ReceiveObj(giveAccess Channels.GiveAccess) {
 		go releaseObj()
 		break
 	}
+
+	go utils.UpdateVisualization(*Node, visualization_address)
 
 }

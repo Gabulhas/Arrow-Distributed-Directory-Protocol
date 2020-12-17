@@ -1,45 +1,38 @@
 {
-    "nodes": [{
-            "name": "8001",
-            "type": 1,
-            "id": 1
-        },
-        {
-            "name": "8002",
-            "type": 2,
-            "id": 2
-        },
-        {
-            "name": "8003",
-            "type": 2,
-            "id": 3
-        },
-        {
-            "name": "8004",
-            "type": 3,
-            "id": 4
-        },
-        {
-            "name": "8005",
-            "type": 2,
-            "id": 5
-        }
-    ],
-    "links": [{
-            "source": 2,
-            "target": 1
-        },
-        {
-            "source": 3,
-            "target": 2
-        },
-        {
-            "source": 5,
-            "target": 4
-        },
-        {
-            "source": 4,
-            "target": 1
-        }
-    ]
+  "nodes": [
+    {
+      "MyAddress": "8001",
+      "type": 1
+    },
+    {
+      "MyAddress": "8002",
+      "type": 2
+    },
+    {
+      "MyAddress": "8003",
+      "type": 2
+    },
+    {
+      "MyAddress": "8004",
+      "type": 3
+    },
+    {
+      "MyAddress": "8005",
+      "type": 2
+    },
+    {
+      "MyAddress": "8005",
+      "type": 2
+    }
+  ],
+  "links": [
+    {
+      "source": "8005",
+      "target": "8001"
+    },
+    {
+      "source": "8004",
+      "target": "8002"
+    }
+  ]
 }

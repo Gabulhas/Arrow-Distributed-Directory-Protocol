@@ -1,0 +1,183 @@
+
+version: "3.8"
+services:
+
+
+  node_0:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8001
+      type: 2 
+      link: 127.0.0.1:8005
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8001:8001"
+    network_mode: host
+
+
+
+
+  node_1:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8002
+      type: 2 
+      link: 127.0.0.1:8006
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8002:8002"
+    network_mode: host
+
+
+
+
+  node_2:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8003
+      type: 2 
+      link: 127.0.0.1:8007
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8003:8003"
+    network_mode: host
+
+
+
+
+  node_3:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8004
+      type: 2 
+      link: 127.0.0.1:8005
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8004:8004"
+    network_mode: host
+
+
+
+
+  node_4:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8005
+      type: 2 
+      link: 127.0.0.1:8008
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8005:8005"
+    network_mode: host
+
+
+
+
+  node_5:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8006
+      type: 2 
+      link: 127.0.0.1:8005
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8006:8006"
+    network_mode: host
+
+
+
+
+  node_6:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8007
+      type: 2 
+      link: 127.0.0.1:8006
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8007:8007"
+    network_mode: host
+
+
+
+
+  node_7:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8008
+      type: 1 
+      link: 
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8008:8008"
+    network_mode: host
+
+
+
+
+  node_8:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8009
+      type: 2 
+      link: 127.0.0.1:8006
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8009:8009"
+    network_mode: host
+
+
+
+
+  node_9:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8010
+      type: 2 
+      link: 127.0.0.1:8007
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+    ports:
+      - "8010:8010"
+    network_mode: host
+
+

@@ -16,6 +16,7 @@ func startServer() {
 	r := mux.NewRouter()
 	r.HandleFunc("/find", findRoute).Methods("POST")
 	r.HandleFunc("/myChan", myChanRoute).Methods("POST")
+	r.HandleFunc("/request", remoteRequest).Methods("GET")
 	http.ListenAndServe(Node.MyAddress, r)
 }
 func findRoute(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +29,7 @@ func findRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("\nGot a find request")
 	fmt.Printf("\n%s", utils.StructToString(accessRequest))
 
-	find <- accessRequest
+	HandleFind(accessRequest)
 
 	json.NewEncoder(w).Encode("Successful")
 
@@ -44,20 +45,21 @@ func myChanRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("\nGot Access To The Object!")
 	fmt.Printf("\n%s", utils.StructToString(giveAccess))
 
-	myChan <- giveAccess
+	fmt.Printf("\nGot the object. %s", utils.StructToString(giveAccess))
+	ReceiveObj(giveAccess)
 
 	json.NewEncoder(w).Encode("Successful")
 }
 
 func SendThroughLink(accessRequest Channels.AccessRequest) {
 	fmt.Printf("\nSending %s", utils.StructToString(accessRequest))
-	sendDataTo(Node.Link, accessRequest)
+	go sendDataTo(Node.Link, accessRequest)
 
 }
 
 //Isto poderá ser simplificado, pois estas duas funções têm o mesmo corpo, usar interface{}
 func SendObjectAccess(giveAccess Channels.GiveAccess) {
-	sendDataTo(Node.WaiterChan, giveAccess)
+	go sendDataTo(Node.WaiterChan, giveAccess)
 }
 
 func sendDataTo(channel string, data interface{}) string {
@@ -81,4 +83,10 @@ func sendDataTo(channel string, data interface{}) string {
 
 	return string(body)
 
+}
+
+func remoteRequest(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	Request()
+	json.NewEncoder(w).Encode("Requested")
 }

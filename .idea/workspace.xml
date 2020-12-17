@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,7 +23,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mini.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/networkExamples/minimalExample.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/networkExamples/paperExample.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/networkExamples/simpleExample.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/networkRead.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/visualizationController.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualization/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualization/assets/temp.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualization/elements/Link.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualization/elements/Node.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualization/elements/VisResponse.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simples.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeBehaviours.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nodeChannels.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/Link.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/Node.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/assets/testdata.json" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/testdata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,16 +81,18 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\src\utils" />
+      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\visualization\assets" />
+      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\visualization\assets\js" />
+      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\visualization\assets\html" />
       <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\src" />
-      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\Channels" />
-      <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\Nodes" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Docker.simples.yml: Compose Deployment">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="projeto" />
       <working_directory value="$PROJECT_DIR$" />
@@ -73,8 +102,17 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="simples.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="simples.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.simples.yml: Compose Deployment" />
         <item itemvalue="Go Build.go build main.go" />
       </list>
     </recent_temporary>
@@ -99,10 +137,10 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1607034175288">
+    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1608145215927">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1607034175288" />
+    <state x="725" y="327" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1608145215927" />
     <state x="690" y="272" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606246415709">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -123,14 +161,17 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="284" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1607015099628" />
-    <state x="2381" y="170" key="SettingsEditor" timestamp="1606244815234">
+    <state x="2381" y="170" key="SettingsEditor" timestamp="1608240462897">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="2381" y="170" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1606244815234" />
-    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1607041051617">
+    <state x="2381" y="170" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1608240462897" />
+    <state x="461" y="170" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1608141096531" />
+    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1608235463857">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1607041051617" />
+    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1608235463857" />
+    <state x="2191" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1607703459141" />
+    <state x="271" y="207" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1608217203108" />
     <state x="268" y="0" width="1558" height="1037" maximized="true" key="dock-window-1" timestamp="1606336063149">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -140,5 +181,13 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1006" y="0" width="930" height="1036" key="dock-window-2/0.0.1920.1050@0.0.1920.1050" timestamp="1606351948229" />
+    <state x="187" y="84" width="585" height="888" key="find.popup" timestamp="1607190039500">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="187" y="84" width="585" height="888" key="find.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1607190039500" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1608217280634">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1608217280634" />
   </component>
 </project>

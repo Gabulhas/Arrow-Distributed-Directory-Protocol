@@ -10,7 +10,32 @@
             border-radius: 1%;
             border-color: #000000;
         }
-
+        
+        .nodeowr {
+            fill: #ff8b80;
+            background-color: #ff8b80;
+        }
+        
+        .nodeot {
+            fill: #d50000;
+            background-color: #d50000;
+        }
+        
+        .nodei {
+            fill: #74ff03;
+            background-color: #74ff03;
+        }
+        
+        .nodewt {
+            fill: #2962ff;
+            background-color: #2962ff;
+        }
+        
+        .nodewwr {
+            fill: #82b2ff;
+            background-color: #82b2ff;
+        }
+        
         .link {
             stroke: #999999;
             stroke-opacity: .6;
@@ -22,11 +47,12 @@
             height: 10px;
             width: 10px;
         }
-
+        
         .labeltext {
             float: left
         }
-        .nodetext{
+
+        .nodetext {
             background-color: #d50000;
         }
     </style>
@@ -37,29 +63,28 @@
 </head>
 
 <body>
-<div class="label">
-    <label for="OWRLabel">Owner With Request</label>
-    <button id="OWRLabel" class="labelcolor" style="background-color: #ff8b80;"></button>
+    <div class="label">
+        <label for="OWRLabel">Owner With Request</label>
+        <button id="OWRLabel" class="labelcolor nodeowr"></button>
 
-    <br>
-    <label for="OTLabel">Owner Terminal</label>
-    <button id="OTLabel" class="labelcolor" style="background-color: #d50000;"></button>
+        <br>
+        <label for="OTLabel">Owner Terminal</label>
+        <button id="OTLabel" class="labelcolor nodeot"></button>
 
-    <br>
-    <label for="IdleLabel">Idle</label>
-    <button id="IdleLabel" class="labelcolor" style="background-color: #74ff03;"></button>
+        <br>
+        <label for="IdleLabel">Idle</label>
+        <button id="IdleLabel" class="labelcolor nodei"></button>
 
-    <br>
-    <label for="WTLabel">Waiter Terminal</label>
-    <button id="WTLabel" class="labelcolor" style="background-color: #2962ff;"></button>
+        <br>
+        <label for="WTLabel">Waiter Terminal</label>
+        <button id="WTLabel" class="labelcolor nodewt"></button>
 
-    <br>
-    <label for="WWRLabel">Waiter With Request</label>
-    <button id="WWRLabel" class="labelcolor" style="background-color: #82b2ff;"></button>
+        <br>
+        <label for="WWRLabel">Waiter With Request</label>
+        <button id="WWRLabel" class="labelcolor nodewwr"></button>
 
-</div>
-<svg id="display" style="border:1px solid black" width="960" height="600"></svg>
-
+    </div>
+    <svg id="display" style="border:1px solid black" width="960" height="600"></svg>
 
 
 </body>

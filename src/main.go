@@ -4,29 +4,33 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"projeto/Channels"
 	"projeto/Nodes"
+	"projeto/utils"
 	"strconv"
+	"sync"
 )
 
 var Node *Nodes.Node
-var find chan Channels.AccessRequest
-var myChan chan Channels.GiveAccess
+
+var Mutex *sync.Mutex
+
+var visualization_address string
 
 func main() {
 	Node = new(Nodes.Node)
 	initNode()
 	OutputState()
 
-	find = make(chan Channels.AccessRequest, 10)
-	myChan = make(chan Channels.GiveAccess, 10)
+	Mutex = &sync.Mutex{}
 
-	go ChanHandler()
+	utils.UpdateVisualization(*Node, visualization_address)
 	go ShellStart()
 	startServer()
 }
 
 func initNode() {
+	visualization_address = fmt.Sprintf("http://%s", os.Getenv("VIS_ADDRESS"))
+
 	args := os.Args[1:]
 
 	fmt.Printf("All args")
@@ -52,6 +56,8 @@ func initNode() {
 
 	if Node.Type == Nodes.OWNER_TERMINAL || Node.Type == Nodes.OWNER_WITH_REQUEST {
 		Node.Obj = true
+	} else if Node.Type == Nodes.IDLE {
+		go autoRequest()
 	}
 }
 
