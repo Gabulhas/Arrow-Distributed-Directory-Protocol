@@ -28,17 +28,19 @@ func HandleFind(accessRequest Channels.AccessRequest) {
 		newAccessRequest.Link = Node.Find
 		SendThroughLink(newAccessRequest)
 		Node.Idle(accessRequest.Link)
-		autoRequest()
 		break
 	case Nodes.WAITER_TERMINAL:
 		Node.WaiterWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
 		break
 	case Nodes.WAITER_WITH_REQUEST:
+
 		newAccessRequest.Link = Node.Find
 		SendThroughLink(newAccessRequest)
-		Node.WaiterWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
+
+		Node.WaiterWithRequest(accessRequest.Link, Node.WaiterChan)
 		break
 	}
+	fmt.Printf("new: %s old:%s", newAccessRequest.GiveAccess.WaiterChan, accessRequest.GiveAccess.WaiterChan)
 
 	go utils.UpdateVisualization(*Node, visualization_address)
 
@@ -54,29 +56,34 @@ func releaseObj() {
 
 	time.Sleep(time.Second * time.Duration(randomSleep))
 	fmt.Printf("\nReleasing...")
-	//Mudar aqui para incluir o node (que está fora do grafo) que contém o object (e iso passa a ser accesso a objeto)
-	//Este waiter chan está errado, mudar
 
 	accessObject := Channels.GiveAccess{WaiterChan: Node.WaiterChan}
 	SendObjectAccess(accessObject)
 	Node.Idle(Node.Link)
 
+	go autoRequest()
 	Mutex.Unlock()
-	autoRequest()
 
 	go utils.UpdateVisualization(*Node, visualization_address)
 
 }
 
-//Arranjar forma de correr isto sempre que o node passar a ser Idle, talvez com channels
 func autoRequest() {
-	go func() {
-		randomSleep := utils.RandomRange(15, 35)
-		fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
+	randomSleep := utils.RandomRange(9, 20)
 
-		time.Sleep(time.Second * time.Duration(randomSleep))
+	fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
+	time.Sleep(time.Second * time.Duration(randomSleep))
+
+	//decidir se faz pedido
+	//chance de fazer
+	if requests := utils.RandomRange(0, 3); requests > 0 {
 		Request()
-	}()
+	} else {
+		cooldown := utils.RandomRange(3, 8)
+		time.Sleep(time.Second * time.Duration(cooldown))
+		autoRequest()
+	}
+
 }
 
 func Request() {

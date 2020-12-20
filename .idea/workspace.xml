@@ -23,31 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mini.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/networkExamples/minimalExample.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/networkExamples/paperExample.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/networkExamples/simpleExample.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/networkRead.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paper.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/visualizationController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualization/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualization/assets/temp.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualization/elements/Link.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualization/elements/Node.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualization/elements/VisResponse.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simples.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projeto.md" beforeDir="false" afterPath="$PROJECT_DIR$/projeto.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nodeBehaviours.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nodeChannels.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/Link.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/Node.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/testdata.json" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/testdata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

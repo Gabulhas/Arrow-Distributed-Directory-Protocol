@@ -138,9 +138,9 @@ Give Access:
     - Channel de quem fez o pedido de acesso (WaiterChan)
     - Channel de quem fez chegar o pedido de acesso (NewLink)
 
-2. Transforma-se em **WaiterWithRequest**.
+2. Transforma-se em **WaiterWithRequest** mas atualiza o **WaiterChan** para **NewWaiterChan**.
 
-`WaiterWithRequest(find, MyChan, NewLink, WaiterChan)`
+`WaiterWithRequest(find, MyChan, NewLink, NewWaiterChan)`
 
 #### Comportamento 2 
 1. Recebe no **MyChan**:

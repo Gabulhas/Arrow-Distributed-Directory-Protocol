@@ -61,7 +61,7 @@ func initNode() {
 	}
 }
 
-//esta parte também comunicará com a visualização
+//isto deverá estar na package "Nodes"
 func OutputState() {
 	fmt.Printf("\n---------------------State-------------------")
 	fmt.Printf("\nMy Address:%s", Node.MyAddress)
