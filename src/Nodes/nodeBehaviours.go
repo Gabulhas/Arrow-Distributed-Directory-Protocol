@@ -1,0 +1,132 @@
+package Nodes
+
+import (
+	"fmt"
+	"projeto/Channels"
+	"projeto/utils"
+	"sync"
+	"time"
+)
+
+var Mutex *sync.Mutex
+
+func init() {
+	Mutex = &sync.Mutex{}
+}
+
+func (node *Node) HandleFind(accessRequest Channels.AccessRequest) {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
+	newAccessRequest := accessRequest
+
+	switch node.Type {
+	case OWNER_TERMINAL:
+		node.OwnerWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
+		go node.releaseObj()
+		break
+	case OWNER_WITH_REQUEST:
+		newAccessRequest.Link = node.Find
+		node.SendThroughLink(newAccessRequest)
+		node.OwnerWithRequest(accessRequest.Link, node.WaiterChan)
+		break
+	case IDLE:
+		newAccessRequest.Link = node.Find
+		node.SendThroughLink(newAccessRequest)
+		node.Idle(accessRequest.Link)
+		break
+	case WAITER_TERMINAL:
+		node.WaiterWithRequest(accessRequest.Link, accessRequest.GiveAccess.WaiterChan)
+		break
+	case WAITER_WITH_REQUEST:
+		newAccessRequest.Link = node.Find
+		node.SendThroughLink(newAccessRequest)
+		node.WaiterWithRequest(accessRequest.Link, node.WaiterChan)
+		break
+	}
+	fmt.Printf("new: %s old:%s", newAccessRequest.GiveAccess.WaiterChan, accessRequest.GiveAccess.WaiterChan)
+
+	go node.UpdateVisualization()
+
+}
+
+func (node *Node) releaseObj() {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
+	randomSleep := utils.RandomRange(1, 2)
+
+	fmt.Printf("\nReleasing the Object in %d seconds.", randomSleep)
+
+	time.Sleep(time.Second * time.Duration(randomSleep))
+	fmt.Printf("\nReleasing...")
+
+	accessObject := Channels.GiveAccess{WaiterChan: node.WaiterChan}
+
+	node.SendObjectAccess(accessObject)
+	node.Idle(node.Link)
+
+	go node.AutoRequest()
+	go node.UpdateVisualization()
+
+}
+
+func (node *Node) AutoRequest() {
+	randomSleep := utils.RandomRange(9, 20)
+
+	fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
+	time.Sleep(time.Second * time.Duration(randomSleep))
+
+	//decidir se faz pedido
+	//chance de fazer
+	if requests := utils.RandomRange(0, 3); requests > 0 {
+		node.Request()
+	} else {
+		cooldown := utils.RandomRange(3, 8)
+		time.Sleep(time.Second * time.Duration(cooldown))
+		node.AutoRequest()
+	}
+
+}
+
+func (node *Node) Request() {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
+	if node.Type != IDLE {
+		fmt.Printf("Can't request an object if not Idle.")
+		return
+	}
+
+	accessRequest := Channels.AccessRequest{
+		GiveAccess: Channels.GiveAccess{
+			WaiterChan: node.MyChan,
+		},
+		Link: node.Find,
+	}
+
+	node.SendThroughLink(accessRequest)
+	node.WaiterTerminal()
+
+	go node.UpdateVisualization()
+}
+
+func (node *Node) ReceiveObj(giveAccess Channels.GiveAccess) {
+	Mutex.Lock()
+	defer Mutex.Unlock()
+
+	fmt.Printf("Received Access:")
+	fmt.Println(giveAccess)
+	switch node.Type {
+	case WAITER_TERMINAL:
+		node.OwnerTerminal()
+		break
+	case WAITER_WITH_REQUEST:
+		node.OwnerWithRequest(node.Link, node.WaiterChan)
+		go node.releaseObj()
+		break
+	}
+
+	go node.UpdateVisualization()
+
+}

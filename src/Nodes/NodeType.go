@@ -10,6 +10,7 @@ const (
 	WAITER_TERMINAL
 )
 
+// String() devolve Nome do Tipo
 func (nodeType NodeType) String() string {
 	return [...]string{"Owner With Request", "Owner Terminal", "Idle", "Waiter With Request", "Waiter Terminal"}[nodeType]
 }

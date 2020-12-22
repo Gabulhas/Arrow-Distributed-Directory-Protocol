@@ -7,6 +7,13 @@ import (
 	"strings"
 )
 
+/*
+
+Apenas para debug
+
+
+*/
+
 func ShellStart() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -25,14 +32,14 @@ func runCommand(command string) {
 
 	switch {
 	case cmd == "state":
-		OutputState()
+		node.OutputState()
 		break
 	case cmd == "req": //cria request para o objeto
-		Request()
+		node.Request()
 		break
 
 	case cmd == "give_obj":
-		Node.Obj = true
+		node.Obj = true
 		break
 
 	case cmd == "exit":

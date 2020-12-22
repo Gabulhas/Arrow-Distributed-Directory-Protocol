@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -16,6 +17,13 @@ type NodeConfigs struct {
 	NodeType  int
 	Link      int
 }
+
+var indexRegex, _ = regexp.Compile(`<index>`)
+var addressRegex, _ = regexp.Compile(`<address>`)
+var typeRegex, _ = regexp.Compile(`<type>`)
+var linkRegex, _ = regexp.Compile(`<link>`)
+var vis_addressRegex, _ = regexp.Compile(`<vis_address>`)
+var portRegex, _ = regexp.Compile(`<port>`)
 
 var template = "docker run --env address:<address> type=<type> link=<link> VIS_ADDRESS= <vis_address>/updateState -p <port>:<port> --interactive --tty"
 
@@ -47,14 +55,13 @@ var templateDockerCompose = `
 var nodes []NodeConfigs
 var vis_address string
 
-
 /*
-Args: 1 - .csv file
+
+
+Turns CSV files into docker-compose.yml files based on the templates above
+Args: 1 - name of .csv file inside the csv_files directory
 	  2 - visualization address
-      3 - output file
-
- */
-
+*/
 
 func main() {
 
@@ -66,7 +73,7 @@ func main() {
 }
 
 func readCSV() {
-	csvFile, err := os.Open(os.Args[1])
+	csvFile, err := os.Open(fmt.Sprintf("./csv_files/%s", os.Args[1]))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -113,16 +120,16 @@ func toDockerCompose() {
 		link := fmt.Sprintf("127.0.0.1:%d", linkValue)
 
 		//mudar isto para regex
-		service = strings.Replace(service, "<index>", strconv.Itoa(i), 1)
-		service = strings.Replace(service, "<address>", fmt.Sprintf("127.0.0.1:%d", port), 1)
-		service = strings.Replace(service, "<type>", fmt.Sprintf("%d", node.NodeType), 1)
+		service = indexRegex.ReplaceAllString(service, strconv.Itoa(i))
+		service = addressRegex.ReplaceAllString(service, fmt.Sprintf("127.0.0.1:%d", port))
+		service = typeRegex.ReplaceAllString(service, fmt.Sprintf("%d", node.NodeType))
 
 		if node.Link == - 1 {
 			link = ""
 		}
-		service = strings.Replace(service, "<link>", link, 1)
-		service = strings.Replace(service, "<vis_address>", vis_address, 1)
-		service = strings.ReplaceAll(service, "<port>", fmt.Sprintf("%d", port))
+		service = linkRegex.ReplaceAllString(service, link)
+		service = vis_addressRegex.ReplaceAllString(service, vis_address)
+		service = portRegex.ReplaceAllString(service, fmt.Sprintf("%d", port))
 
 		DockerComposeStart = DockerComposeStart + service
 	}
@@ -131,7 +138,7 @@ func toDockerCompose() {
 
 func writeToFile() {
 
-	f, err := os.Create(fmt.Sprintf("%s.yml", os.Args[3]))
+	f, err := os.Create(fmt.Sprintf("./dockerfiles/%s", strings.Replace(os.Args[1], ".csv", ".yml", 1)))
 	if err != nil {
 		log.Fatal(err)
 	}
