@@ -113,13 +113,13 @@ func readCSV() {
 }
 
 func toDockerCompose() {
+	//Mudar para string builder
 	for i, node := range nodes {
 		service := templateDockerCompose
 		port := 8000 + node.MyAddress
 		linkValue := 8000 + node.Link
 		link := fmt.Sprintf("127.0.0.1:%d", linkValue)
 
-		//mudar isto para regex
 		service = indexRegex.ReplaceAllString(service, strconv.Itoa(i))
 		service = addressRegex.ReplaceAllString(service, fmt.Sprintf("127.0.0.1:%d", port))
 		service = typeRegex.ReplaceAllString(service, fmt.Sprintf("%d", node.NodeType))

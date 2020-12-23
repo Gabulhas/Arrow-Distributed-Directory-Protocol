@@ -12,6 +12,11 @@ import (
 var selfNode *Nodes.Node
 
 func init() {
+
+	//Alerar para que todos os dados sejam fornecidos da mesma forma
+	//Estão a ser usados command arguments e environment variables
+	//Ver https://github.com/spf13/cobra
+
 	args := os.Args[1:]
 
 	if len(args) < 2 {

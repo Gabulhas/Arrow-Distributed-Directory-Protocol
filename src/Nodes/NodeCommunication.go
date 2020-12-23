@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"projeto/Channels"
 	"time"
 )
@@ -33,10 +34,10 @@ func sendDataTo(channel string, data interface{}) {
 
 		resp, err := http.Post(channel, "application/json", bytes.NewBuffer(message))
 		if err != nil {
-			fmt.Printf(err.Error() + "")
+			fmt.Fprintln(os.Stderr, err)
 
 			retries++
-			time.Sleep(time.Second * time.Duration(3))
+			time.Sleep(time.Second * time.Duration(5))
 
 			continue
 		}
@@ -66,7 +67,7 @@ func (node *Node) UpdateVisualization() {
 	for retries < max_retries {
 		resp, err := http.Post(node.VisAddress, "application/json", bytes.NewBuffer(message))
 		if err != nil {
-			fmt.Printf(err.Error() + "")
+			fmt.Fprintln(os.Stderr, err)
 			retries++
 			time.Sleep(time.Second * time.Duration(3))
 			continue
