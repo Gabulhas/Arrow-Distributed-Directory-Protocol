@@ -9,15 +9,15 @@ import (
 
 func StructToString(i interface{}) string {
 
-	struct_json, err := json.Marshal(i)
+	structJson, err := json.Marshal(i)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	return string(struct_json)
+	return string(structJson)
 }
 
 func RandomRange(min, max int) int {
-	return rand.Intn(max-min+1) + min
+	return rand.Intn(max - min + 1) + min
 }
 
 func RandomSleep(duration time.Duration, min int, max int) {

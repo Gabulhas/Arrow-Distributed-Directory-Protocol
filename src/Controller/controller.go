@@ -11,14 +11,14 @@ import (
 	"projeto/utils"
 )
 
-var node *Nodes.Node
+var selfNode *Nodes.Node
 
 func StartServer(newNode *Nodes.Node) {
-	node = newNode
+	selfNode = newNode
 	r := mux.NewRouter()
 	r.HandleFunc("/find", findRoute).Methods("POST")
 	r.HandleFunc("/myChan", myChanRoute).Methods("POST")
-	if err := http.ListenAndServe(node.MyAddress, r); err != nil {
+	if err := http.ListenAndServe(selfNode.MyAddress, r); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -32,7 +32,7 @@ func findRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("\nGot a find request")
 	fmt.Printf("\n%s", utils.StructToString(accessRequest))
 
-	node.HandleFind(accessRequest)
+	selfNode.HandleFind(accessRequest)
 
 	json.NewEncoder(w).Encode("Successful")
 
@@ -48,8 +48,7 @@ func myChanRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("\nGot Access To The Object!")
 	fmt.Printf("\n%s", utils.StructToString(giveAccess))
 
-	fmt.Printf("\nGot the object. %s", utils.StructToString(giveAccess))
-	node.ReceiveObj(giveAccess)
+	selfNode.ReceiveObj(giveAccess)
 
 	json.NewEncoder(w).Encode("Successful")
 }

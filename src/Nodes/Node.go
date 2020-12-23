@@ -3,7 +3,7 @@ package Nodes
 import "fmt"
 
 type Node struct {
-	Type       NodeType //Obvio
+	Type       NodeType //Tipo do Node, ver NodeType.go
 	MyChan     string   //Channel onde recebe acesso ao objeto
 	Find       string   //Channel onde recebe pedidos
 	Link       string   //Ligação para o child Node
@@ -45,7 +45,6 @@ func (node *Node) WaiterTerminal() {
 	node.WaiterChan = ""
 }
 
-//isto deverá estar na package "Nodes"
 func (node *Node) OutputState() {
 	fmt.Printf("\n---------------------State-------------------")
 	fmt.Printf("\nMy Address:%s", node.MyAddress)

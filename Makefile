@@ -8,11 +8,17 @@ start_viz:
 
 start_containers:
 	-docker-compose stop
-	docker-compose.exe up --build --force-recreate -d
+	docker-compose up --build --force-recreate -d
 
 swap_docker:
 	cp -f ./networkExamples/dockerfiles/$(name) ./networkExamples/docker-compose.yml
 
+stop_all:
+	-docker stop vis
+	-docker-compose stop
+
+
 run:
-	 $(MAKE) start_viz
-	 $(MAKE) start_containers
+	$(MAKE) stop_all
+	$(MAKE) start_viz
+	$(MAKE) start_containers

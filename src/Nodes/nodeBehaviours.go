@@ -8,11 +8,7 @@ import (
 	"time"
 )
 
-var Mutex *sync.Mutex
-
-func init() {
-	Mutex = &sync.Mutex{}
-}
+var Mutex = &sync.Mutex{}
 
 func (node *Node) HandleFind(accessRequest Channels.AccessRequest) {
 	Mutex.Lock()
@@ -44,7 +40,6 @@ func (node *Node) HandleFind(accessRequest Channels.AccessRequest) {
 		node.WaiterWithRequest(accessRequest.Link, node.WaiterChan)
 		break
 	}
-	fmt.Printf("new: %s old:%s", newAccessRequest.GiveAccess.WaiterChan, accessRequest.GiveAccess.WaiterChan)
 
 	go node.UpdateVisualization()
 
@@ -72,7 +67,7 @@ func (node *Node) releaseObj() {
 }
 
 func (node *Node) AutoRequest() {
-	randomSleep := utils.RandomRange(9, 20)
+	randomSleep := utils.RandomRange(5, 15)
 
 	fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
 	time.Sleep(time.Second * time.Duration(randomSleep))
@@ -82,7 +77,7 @@ func (node *Node) AutoRequest() {
 	if requests := utils.RandomRange(0, 3); requests > 0 {
 		node.Request()
 	} else {
-		cooldown := utils.RandomRange(3, 8)
+		cooldown := utils.RandomRange(5, 10)
 		time.Sleep(time.Second * time.Duration(cooldown))
 		node.AutoRequest()
 	}
@@ -93,6 +88,7 @@ func (node *Node) Request() {
 	Mutex.Lock()
 	defer Mutex.Unlock()
 
+	//Existe este if no caso de se fazer um request a partir da "shell" do node, talvez a shell não seja necessária
 	if node.Type != IDLE {
 		fmt.Printf("Can't request an object if not Idle.")
 		return

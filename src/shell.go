@@ -32,14 +32,14 @@ func runCommand(command string) {
 
 	switch {
 	case cmd == "state":
-		node.OutputState()
+		selfNode.OutputState()
 		break
 	case cmd == "req": //cria request para o objeto
-		node.Request()
+		selfNode.Request()
 		break
 
 	case cmd == "give_obj":
-		node.Obj = true
+		selfNode.Obj = true
 		break
 
 	case cmd == "exit":
