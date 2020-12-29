@@ -66,20 +66,27 @@ func (node *Node) releaseObj() {
 
 }
 
+//remover recursividade
 func (node *Node) AutoRequest() {
-	randomSleep := utils.RandomRange(5, 15)
+	var randomSleep int
 
-	fmt.Printf("\nRequesting the Object in %d seconds.", randomSleep)
-	time.Sleep(time.Second * time.Duration(randomSleep))
+	for {
 
-	//decidir se faz pedido
-	//chance de fazer
-	if requests := utils.RandomRange(0, 3); requests > 0 {
-		node.Request()
-	} else {
-		cooldown := utils.RandomRange(5, 10)
-		time.Sleep(time.Second * time.Duration(cooldown))
-		node.AutoRequest()
+		randomSleep = utils.RandomRange(5, 15)
+
+		fmt.Printf("\nTrying to Request the Object in %d seconds.", randomSleep)
+		time.Sleep(time.Second * time.Duration(randomSleep))
+
+		//decidir se faz pedido
+		//chance de fazer
+		if requests := utils.RandomRange(0, 3); requests > 0 {
+			node.Request()
+			break
+		} else {
+			cooldown := utils.RandomRange(5, 10)
+			fmt.Printf("Didn't request. Retrying in %d seconds.", cooldown)
+			time.Sleep(time.Second * time.Duration(cooldown))
+		}
 	}
 
 }
@@ -88,11 +95,14 @@ func (node *Node) Request() {
 	Mutex.Lock()
 	defer Mutex.Unlock()
 
-	//Existe este if no caso de se fazer um request a partir da "shell" do node, talvez a shell não seja necessária
+	//Existe para evitar:
+	//que ou o utilizador faça um request e o node já mudou de tipo
+	//que se faça um request a partir do método do Node de pedidos remotos
 	if node.Type != IDLE {
 		fmt.Printf("Can't request an object if not Idle.")
 		return
 	}
+	fmt.Printf("Requesting.")
 
 	accessRequest := Channels.AccessRequest{
 		GiveAccess: Channels.GiveAccess{

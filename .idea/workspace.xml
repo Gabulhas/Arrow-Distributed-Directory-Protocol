@@ -23,10 +23,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Nodes/NodeTranformations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/networkRead.go" beforeDir="false" afterPath="$PROJECT_DIR$/networkExamples/networkRead.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeCommunication.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeCommunication.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/Node.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/Node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeCommunication.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeCommunications.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/nodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

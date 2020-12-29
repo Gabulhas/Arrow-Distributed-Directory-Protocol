@@ -21,6 +21,5 @@ func RandomRange(min, max int) int {
 }
 
 func RandomSleep(duration time.Duration, min int, max int) {
-
 	time.Sleep(duration * time.Duration(RandomRange(min, max)))
 }
