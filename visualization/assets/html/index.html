@@ -42,19 +42,6 @@
             stroke-width: 1px;
             z-index: 200;
         }
-
-        .labelcolor {
-            height: 10px;
-            width: 10px;
-        }
-        
-        .labeltext {
-            float: left
-        }
-
-        .nodetext {
-            background-color: #d50000;
-        }
     </style>
     <title>Projeto</title>
 
@@ -63,27 +50,8 @@
 </head>
 
 <body>
-    <div class="label">
-        <label for="OWRLabel">Owner With Request</label>
-        <button id="OWRLabel" class="labelcolor nodeowr"></button>
+    <svg id="legend" height=200 width=200> </svg>
 
-        <br>
-        <label for="OTLabel">Owner Terminal</label>
-        <button id="OTLabel" class="labelcolor nodeot"></button>
-
-        <br>
-        <label for="IdleLabel">Idle</label>
-        <button id="IdleLabel" class="labelcolor nodei"></button>
-
-        <br>
-        <label for="WTLabel">Waiter Terminal</label>
-        <button id="WTLabel" class="labelcolor nodewt"></button>
-
-        <br>
-        <label for="WWRLabel">Waiter With Request</label>
-        <button id="WWRLabel" class="labelcolor nodewwr"></button>
-
-    </div>
     <svg id="display" style="border:1px solid black" width="960" height="600"></svg>
 
 

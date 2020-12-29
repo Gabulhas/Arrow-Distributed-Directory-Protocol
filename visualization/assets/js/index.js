@@ -6,9 +6,50 @@ var colors = [
     "rgb(41, 98, 255)"
 ]
 
+var typeNames = [
+    "Owner With Request", "Owner Terminal", "Idle", "Waiter With Request", "Waiter Terminal"
+]
 
+let link_attrs = {
+    'id': 'arrowhead',
+    'viewBox': '-0 -5 10 10',
+    'refX': 13,
+    'refY': 0,
+    'orient': 'auto',
+    'markerWidth': 13,
+    'markerHeight': 13,
+    'xoverflow': 'visible'
+}
 
-var svg = d3.select("svg"),
+var labelsvg = d3.select("svg#legend")
+var labelwidth = +labelsvg.attr("width")
+var labelheight = +labelsvg.attr("height")
+
+function addLabel() {
+    let lastPos = -20
+
+    for (let index = 0; index < 5; index++) {
+        lastPos = lastPos + 30
+        addLabelNode(typeNames[index], colors[index], lastPos)
+    }
+
+    labelsvg.append("line").merge(link)
+        .attr("class", "link")
+        .attr('marker-end', 'url(#arrowhead)')
+        .attr("x1", 10)
+        .attr("y1", 160)
+        .attr("x2", 100)
+        .attr("y2", 160);
+    labelsvg.append("text").attr("x", 110).attr("y", 160).text("Link").style("font-size", "15px").attr("alignment-baseline", "middle")
+
+}
+
+function addLabelNode(text, color, y) {
+    labelsvg.append("circle").attr("cx", 10).attr("cy", y).attr("r", 8).style("fill", color)
+    labelsvg.append("text").attr("x", 30).attr("y", y + 5).text(text).style("font-size", "15px").attr("alignment-baseline", "middle")
+}
+
+var svg = d3.select("svg#display"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
     color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -16,16 +57,7 @@ var svg = d3.select("svg"),
 svg
     .append('defs')
     .append('marker')
-    .attrs({
-        'id': 'arrowhead',
-        'viewBox': '-0 -5 10 10',
-        'refX': 13,
-        'refY': 0,
-        'orient': 'auto',
-        'markerWidth': 13,
-        'markerHeight': 13,
-        'xoverflow': 'visible'
-    })
+    .attrs(link_attrs)
     .append('svg:path')
     .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
     .attr('fill', '#999')
@@ -49,12 +81,11 @@ var simulation = d3.forceSimulation(nodes)
 
  */
 
-var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"),
-    link = g.append("g").attr("stroke", "#000").attr("stroke-width", 1.5).selectAll(".link"),
-    node = g.append("g").selectAll(".node")
+var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+var link = g.append("g").attr("stroke", "#000").attr("stroke-width", 1.5).selectAll(".link")
+var node = g.append("g").selectAll(".node")
 
 restart();
-
 
 function restart() {
 
@@ -68,17 +99,38 @@ function restart() {
             return colors[d.Type]
         }).attr("r", 8)
         .on("mouseover", function(d) {
-            d3.select(this).style("stroke", "black") // set the line colour
-            mouseover(d)
+
+	    //Refactor VVVVVVV
+
+            d3.select(this).style("stroke", "black") 
+            let parent = d3.select(this.parentNode)
+            parent.append("text")
+                .attr("x", d.x + 4)
+                .attr("y", d.y + 4)
+                .attr("fill", "black")
+                .text(`Address: ${d.MyAddress}`)
+                .style("font-size", "15px")
+
+	    if (d.Link != "") {
+		parent.append("text")
+		    .attr("x", d.x + 4)
+		    .attr("y", d.y + 4 + 15)
+		    .attr("fill", "black")
+		    .text(`Link -> ${d.Link}`)
+		    .style("font-size", "15px")
+	    }
+
         }).on("mouseout", function(d) {
             d3.select(this).style("stroke", "none") // set the line colour
-            mouseout(d)
+            d3.select(this.parentNode).selectAll("text").remove()
         })
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
 
+
+    node.exit().remove();
 
     link = link.data(links)
     link.exit().remove();
@@ -117,7 +169,9 @@ function ticked() {
 }
 
 function mouseover(d) {
-    var div = d3.select("body").append("div")
+
+    let type = typeNames[d.Type]
+    d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 1)
         .style("left", (d.y + 120) + "px")
@@ -126,10 +180,10 @@ function mouseover(d) {
             "<table class=\"nodeDetails\" style='font-size: 10px; font-family: sans-serif;' >" +
             "<tr><td>Address: </td><td>" + d.MyAddress + "</td></tr>" +
             "<tr><td>Link: </td><td>" + d.Link + "</td></tr>" +
-            "<tr><td>Type: </td><td>" + d.Type + "</td></tr>" +
+            "<tr><td>Type: </td><td>" + type + "</td></tr>" +
             "</table>"
         );
-    if (d.parent) mouseover(d.parent);
+    //if (d.parent) mouseover(d.parent);
 }
 
 function dragstarted(d) {
@@ -145,21 +199,13 @@ function dragged(d) {
 
 function dragended(d) {
     if (!d3.event.active) simulation.alphaTarget(0);
-    //d.fx = null;
-    //d.fy = null;
 }
 
 function mouseout(d) {
     d3.select("body").selectAll('div.tooltip').remove();
 }
 
-function recolor() {
-
-
-}
-
 //Complexidade muito alta, mudar para set/map
-
 function updateNodes(newNodes) {
 
     for (let i = nodes.length - 1; i >= 0; i--) {
@@ -204,12 +250,9 @@ function getData() {
     })
 }
 
-
+addLabel()
 getData()
 d3.interval(function() {
     getData()
     restart()
-    d3.select("body").selectAll('div.tooltip').remove();
-
-
 }, 300)

@@ -14,7 +14,7 @@ services:
       type: 2 
       link: 127.0.0.1:8002
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "true"
+      requests: true
     ports:
       - "8001:8001"
     network_mode: host
@@ -33,8 +33,7 @@ services:
       type: 1 
       link: 
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "true"
-
+      requests: true
     ports:
       - "8002:8002"
     network_mode: host
@@ -53,7 +52,7 @@ services:
       type: 2 
       link: 127.0.0.1:8002
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "true"
+      requests: true
     ports:
       - "8003:8003"
     network_mode: host

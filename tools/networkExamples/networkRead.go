@@ -45,6 +45,7 @@ var templateDockerCompose = `
       type: <type> 
       link: <link>
       VIS_ADDRESS: <vis_address>/updateState
+      requests: true
     ports:
       - "<port>:<port>"
     network_mode: host
