@@ -13,11 +13,14 @@ import (
 
 var selfNode *Nodes.Node
 
+//TODO: Mudar respostas, mesmo que estas não sejam lidas pelos nodes
+
 func StartServer(newNode *Nodes.Node) {
 	selfNode = newNode
 	r := mux.NewRouter()
 	r.HandleFunc("/find", findRoute).Methods("POST")
 	r.HandleFunc("/myChan", myChanRoute).Methods("POST")
+	r.HandleFunc("/remoteRequest", remoteRequest).Methods("GET")
 	if err := http.ListenAndServe(selfNode.MyAddress, r); err != nil {
 		log.Fatal(err)
 	}
@@ -52,4 +55,11 @@ func myChanRoute(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode("Successful")
 }
+
+func remoteRequest(w http.ResponseWriter, r *http.Request)  {
+	defer r.Body.Close()
+	selfNode.Request()
+	json.NewEncoder(w).Encode("Successful")
+}
+
 

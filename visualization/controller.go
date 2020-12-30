@@ -14,6 +14,8 @@ import (
 	"visualization/elements"
 )
 
+//TODO: Mudar para package
+
 var re = regexp.MustCompile(`http://|/find`)
 var Mutex sync.Mutex
 

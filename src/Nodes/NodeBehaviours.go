@@ -79,7 +79,7 @@ func (node *Node) AutoRequest() {
 
 		//decidir se faz pedido
 		//chance de fazer
-		if requests := utils.RandomRange(0, 3); requests > 0 {
+		if requests := utils.RandomRange(0, 1); requests > 0 {
 			node.Request()
 			break
 		} else {

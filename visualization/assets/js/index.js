@@ -100,7 +100,7 @@ function restart() {
         }).attr("r", 8)
         .on("mouseover", function(d) {
 
-	    //Refactor VVVVVVV
+	    //TODO:Refactor VVVVVVV
 
             d3.select(this).style("stroke", "black") 
             let parent = d3.select(this.parentNode)
@@ -121,7 +121,7 @@ function restart() {
 	    }
 
         }).on("mouseout", function(d) {
-            d3.select(this).style("stroke", "none") // set the line colour
+            d3.select(this).style("stroke", "none")
             d3.select(this.parentNode).selectAll("text").remove()
         })
         .call(d3.drag()
@@ -250,6 +250,7 @@ function getData() {
     })
 }
 
+//TODO:Mudar label
 addLabel()
 getData()
 d3.interval(function() {

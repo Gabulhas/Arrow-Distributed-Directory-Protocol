@@ -23,20 +23,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tools/concurrentRequest/concurrentRequest.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/csv_files/minimalExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/minimalExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/csv_files/paperExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/paperExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/csv_files/ring.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/ring.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/csv_files/simpleExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/simpleExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/csv_files/star.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/star.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/dockerfiles/ring.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkExamples/networkRead.go" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/minimalExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/minimalExample.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/paperExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/paperExample.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/ring.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/ring.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/simpleExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/simpleExample.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +49,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="C:\Go" />
+  <component name="GOROOT" path="/usr/lib/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -69,8 +68,8 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -121,12 +120,10 @@
       <item itemvalue="Docker.simples.yml: Compose Deployment" />
       <item itemvalue="Go Build.go build main.go" />
       <item itemvalue="Go Build.go build visualization" />
-      <item itemvalue="Makefile.build_viz" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build visualization" />
-        <item itemvalue="Makefile.build_viz" />
         <item itemvalue="Docker.simples.yml: Compose Deployment" />
         <item itemvalue="Go Build.go build main.go" />
       </list>
@@ -150,5 +147,15 @@
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="753" y="460" key="#GOROOT" timestamp="1609287404148">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="753" y="460" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1609287404148" />
+    <state x="445" y="144" key="SettingsEditor" timestamp="1609288390397">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="445" y="144" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1609288390397" />
   </component>
 </project>

@@ -45,7 +45,7 @@ var templateDockerCompose = `
       type: <type> 
       link: <link>
       VIS_ADDRESS: <vis_address>/updateState
-      requests: true
+      requests: "true"
     ports:
       - "<port>:<port>"
     network_mode: host
@@ -114,7 +114,7 @@ func readCSV() {
 }
 
 func toDockerCompose() {
-	//Mudar para string builder
+	//TODO:Mudar para string builder
 	for i, node := range nodes {
 		service := templateDockerCompose
 		port := 8000 + node.MyAddress
@@ -125,7 +125,7 @@ func toDockerCompose() {
 		service = addressRegex.ReplaceAllString(service, fmt.Sprintf("127.0.0.1:%d", port))
 		service = typeRegex.ReplaceAllString(service, fmt.Sprintf("%d", node.NodeType))
 
-		if node.Link == - 1 {
+		if node.Link == -1 {
 			link = ""
 		}
 		service = linkRegex.ReplaceAllString(service, link)

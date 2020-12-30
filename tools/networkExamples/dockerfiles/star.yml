@@ -14,7 +14,7 @@ services:
       type: 1 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8001:8001"
     network_mode: host
@@ -33,7 +33,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8002:8002"
     network_mode: host
@@ -52,7 +52,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8003:8003"
     network_mode: host
@@ -71,7 +71,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8004:8004"
     network_mode: host
@@ -90,7 +90,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8005:8005"
     network_mode: host
@@ -109,7 +109,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8006:8006"
     network_mode: host
@@ -128,7 +128,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8007:8007"
     network_mode: host
@@ -147,7 +147,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8008:8008"
     network_mode: host
@@ -166,7 +166,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8009:8009"
     network_mode: host
@@ -185,7 +185,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8010:8010"
     network_mode: host
@@ -204,7 +204,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8011:8011"
     network_mode: host
@@ -223,7 +223,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8012:8012"
     network_mode: host
@@ -242,7 +242,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8013:8013"
     network_mode: host
@@ -261,7 +261,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8014:8014"
     network_mode: host
@@ -280,7 +280,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8015:8015"
     network_mode: host
@@ -299,7 +299,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8016:8016"
     network_mode: host
@@ -318,7 +318,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8017:8017"
     network_mode: host
@@ -337,7 +337,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8018:8018"
     network_mode: host
@@ -356,7 +356,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8019:8019"
     network_mode: host
@@ -375,7 +375,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8020:8020"
     network_mode: host
@@ -394,7 +394,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8021:8021"
     network_mode: host
@@ -413,7 +413,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8022:8022"
     network_mode: host
@@ -432,7 +432,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8023:8023"
     network_mode: host
@@ -451,7 +451,7 @@ services:
       type: 2 
       link: 127.0.0.1:8001
       VIS_ADDRESS: 127.0.0.1:8000/updateState
-      requests: "false"
+      requests: "true"
     ports:
       - "8024:8024"
     network_mode: host
