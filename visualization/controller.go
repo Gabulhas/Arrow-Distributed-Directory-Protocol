@@ -16,7 +16,7 @@ import (
 
 //TODO: Mudar para package
 
-var re = regexp.MustCompile(`http://|/find`)
+var re = regexp.MustCompile(`http://|/find|/myChan`)
 var Mutex sync.Mutex
 
 func startServer() {
@@ -28,6 +28,7 @@ func startServer() {
 
 	r.HandleFunc("/", root).Methods("GET")
 	r.HandleFunc("/data", data).Methods("GET")
+	r.HandleFunc("/queue", queue).Methods("GET")
 	r.HandleFunc("/updateState", updateState).Methods("POST")
 	r.HandleFunc("/logs", getLogs).Methods("GET")
 
@@ -86,6 +87,43 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode("Successful")
 
+}
+
+//TODO: Limpar código e "baixar" complexidade, por causa de dois loops
+func queue(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+
+	response := new(elements.QueueResponse)
+	response.Owner = ""
+
+	Mutex.Lock()
+
+	var currentNode elements.Node
+	var nextNode elements.Node
+
+	for _, element := range Nodes {
+		if element.Type == 0 || element.Type == 1 {
+			currentNode = element
+			response.Owner = currentNode.MyAddress
+			break
+		}
+	}
+
+	//TODO: mudar este if por causa do Mutex.Unlock()
+	if response.Owner == "" {
+		Mutex.Unlock()
+		return
+	}
+
+	for currentNode.WaiterChan != "" {
+		nextNode = Nodes[re.ReplaceAllString(currentNode.WaiterChan, ``)]
+		response.QueueNode = append(response.QueueNode, nextNode.MyAddress)
+		currentNode = nextNode
+	}
+
+	Mutex.Unlock()
+
+	json.NewEncoder(w).Encode(response)
 }
 
 func getLogs(w http.ResponseWriter, r *http.Request) {

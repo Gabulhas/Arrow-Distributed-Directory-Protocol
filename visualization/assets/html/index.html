@@ -10,37 +10,51 @@
             border-radius: 1%;
             border-color: #000000;
         }
-        
+
         .nodeowr {
             fill: #ff8b80;
             background-color: #ff8b80;
         }
-        
+
         .nodeot {
             fill: #d50000;
             background-color: #d50000;
         }
-        
+
         .nodei {
             fill: #74ff03;
             background-color: #74ff03;
         }
-        
+
         .nodewt {
             fill: #2962ff;
             background-color: #2962ff;
         }
-        
+
         .nodewwr {
             fill: #82b2ff;
             background-color: #82b2ff;
         }
-        
+
         .link {
             stroke: #999999;
             stroke-opacity: .6;
             stroke-width: 1px;
             z-index: 200;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .item {
+            flex-basis: 100px;
+            height: 100px;
+            margin: 5px;
         }
     </style>
     <title>Projeto</title>
@@ -50,11 +64,44 @@
 </head>
 
 <body>
-    <svg id="legend" height=200 width=200> </svg>
-
-    <svg id="display" style="border:1px solid black" width="960" height="600"></svg>
 
 
+<div class="container">
+    <div class="item">
+        <svg id="legend" height=200 width=200></svg>
+
+        <svg id="display" style="border:1px solid black" width="960" height="600"></svg>
+    </div>
+    <div class="container item">
+        <div class="item">
+            <table>
+                <thead>
+                <tr>
+                    <td>QUEUE</td>
+                </tr>
+
+                </thead>
+                <tbody id="queue">
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="item">
+            <table>
+                <thead>
+                <tr>
+                    <td>OWNER</td>
+                </tr>
+
+                </thead>
+                <tbody id="owner_table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 <script src="/assets/js/index.js"></script>
 

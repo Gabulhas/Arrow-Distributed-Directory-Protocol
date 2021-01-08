@@ -23,19 +23,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/visualization/elements/QueueResponse.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/minimalExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/minimalExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/paperExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/paperExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/ring.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/ring.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/csv_files/simpleExample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/csv_files/simpleExample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/elements/Node.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/elements/Node.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="/usr/lib/go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -80,7 +75,7 @@
       <recent name="C:\Users\guilh\Documents\aulas\PROJETO\projeto\src\Controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build visualization">
+  <component name="RunManager" selected="Go Build.run_viz">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="projeto" />
       <working_directory value="$PROJECT_DIR$" />
@@ -102,6 +97,17 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="run_viz" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+      <module name="projeto" />
+      <working_directory value="$PROJECT_DIR$/visualization" />
+      <envs>
+        <env name="address" value=":8000" />
+      </envs>
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/visualization/main.go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="build_viz" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/Makefile" target="build_viz" workingDirectory="" arguments="">
         <envs />
@@ -119,13 +125,13 @@
     <list>
       <item itemvalue="Docker.simples.yml: Compose Deployment" />
       <item itemvalue="Go Build.go build main.go" />
+      <item itemvalue="Go Build.run_viz" />
       <item itemvalue="Go Build.go build visualization" />
+      <item itemvalue="Makefile.build_viz" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build visualization" />
-        <item itemvalue="Docker.simples.yml: Compose Deployment" />
-        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Build.run_viz" />
       </list>
     </recent_temporary>
   </component>
@@ -147,15 +153,5 @@
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="753" y="460" key="#GOROOT" timestamp="1609287404148">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="753" y="460" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1609287404148" />
-    <state x="445" y="144" key="SettingsEditor" timestamp="1609288390397">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="445" y="144" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1609288390397" />
   </component>
 </project>
