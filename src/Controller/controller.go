@@ -13,7 +13,6 @@ import (
 
 var selfNode *Nodes.Node
 
-//TODO: Mudar respostas, mesmo que estas não sejam lidas pelos nodes
 
 func StartServer(newNode *Nodes.Node) {
 	selfNode = newNode

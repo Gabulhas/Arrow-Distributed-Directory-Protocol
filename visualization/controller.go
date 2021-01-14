@@ -18,6 +18,8 @@ import (
 
 var re = regexp.MustCompile(`http://|/find|/myChan`)
 var Mutex sync.Mutex
+var requestingNodes []string
+var currentOwner string
 
 func startServer() {
 
@@ -31,6 +33,7 @@ func startServer() {
 	r.HandleFunc("/queue", queue).Methods("GET")
 	r.HandleFunc("/updateState", updateState).Methods("POST")
 	r.HandleFunc("/logs", getLogs).Methods("GET")
+	r.HandleFunc("/requestAll", requestAll).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(os.Getenv("address"), r))
 }
@@ -83,6 +86,15 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	AllUpdates = append(AllUpdates, update)
 	update.Link = re.ReplaceAllString(update.Link, ``)
 	Nodes[update.MyAddress] = update
+	switch update.Type {
+	case 4:
+		requestingNodes = append(requestingNodes, update.MyAddress)
+		break
+	case 0, 1:
+		currentOwner = update.MyAddress
+		break
+	}
+
 	Mutex.Unlock()
 
 	json.NewEncoder(w).Encode("Successful")
@@ -101,15 +113,10 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	var currentNode elements.Node
 	var nextNode elements.Node
 
-	for _, element := range Nodes {
-		if element.Type == 0 || element.Type == 1 {
-			currentNode = element
-			response.Owner = currentNode.MyAddress
-			break
-		}
-	}
+	response.Requesting = requestingNodes
+	response.Owner = currentOwner
+	currentNode = Nodes[currentOwner]
 
-	//TODO: mudar este if por causa do Mutex.Unlock()
 	if response.Owner == "" {
 		Mutex.Unlock()
 		return
@@ -121,6 +128,7 @@ func queue(w http.ResponseWriter, r *http.Request) {
 		currentNode = nextNode
 	}
 
+	requestingNodes = nil
 	Mutex.Unlock()
 
 	json.NewEncoder(w).Encode(response)
@@ -137,4 +145,29 @@ func getLogs(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(sb.String()))
 
+}
+
+func requestAll(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	var wg sync.WaitGroup
+
+	w.Header().Set("Content-Type", "text/plain")
+
+	for _, element := range Nodes {
+		wg.Add(1)
+		go remoteRequest(element.MyAddress, &wg)
+	}
+	wg.Wait()
+	w.Write([]byte("Successful"))
+}
+
+// TODO: usar esta função para o remote request de um só node, do "double click"
+func remoteRequest(address string, wg *sync.WaitGroup) {
+
+	defer (*wg).Done()
+
+	_, err := http.Get(fmt.Sprintf("http://%s/remoteRequest", address))
+	if err != nil {
+		fmt.Println(err)
+	}
 }

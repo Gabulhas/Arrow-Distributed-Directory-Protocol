@@ -4,7 +4,7 @@ build_viz:
 start_viz:
 	-docker stop vis
 	-docker rm vis
-	docker run -it --env   address=:8000 --publish 8000:8000 --detach --name vis vis:latest
+	docker run -it --net=host --env   address=:8000 --publish 8000:8000 --detach --name vis vis:latest
 
 start_containers:
 	-docker-compose stop

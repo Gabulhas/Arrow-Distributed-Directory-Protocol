@@ -69,8 +69,43 @@
 <div class="container">
     <div class="item">
         <svg id="legend" height=200 width=200></svg>
-
         <svg id="display" style="border:1px solid black" width="960" height="600"></svg>
+        <button onclick="remoteRequestAll()">Remote Request All!</button>
+        <div class="container">
+
+
+            <div class="item">
+                <table>
+                    <thead>
+                    <tr>
+                        <td>QUEUE HISTORY</td>
+                    </tr>
+
+                    </thead>
+                    <tbody id="requester_history">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="item">
+
+                <div class="item">
+                    <table>
+                        <thead>
+                        <tr>
+                            <td>OWNER HISTORY</td>
+                        </tr>
+
+                        </thead>
+                        <tbody id="owner_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
     </div>
     <div class="container item">
         <div class="item">

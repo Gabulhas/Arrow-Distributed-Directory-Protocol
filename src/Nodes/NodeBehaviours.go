@@ -83,7 +83,7 @@ func (node *Node) AutoRequest() {
 			node.Request()
 			break
 		} else {
-			cooldown := utils.RandomRange(5, 10)
+			cooldown := utils.RandomRange(5, 20)
 			fmt.Printf("Didn't request. Retrying in %d seconds.", cooldown)
 			time.Sleep(time.Second * time.Duration(cooldown))
 		}

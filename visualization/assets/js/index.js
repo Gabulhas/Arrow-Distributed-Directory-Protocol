@@ -103,7 +103,6 @@ function restart() {
         }).attr("r", 8)
         .on("mouseover", function (d) {
 
-            //TODO:Refactor VVVVVVV
 
             d3.select(this).style("stroke", "black")
             let parent = d3.select(this.parentNode)
@@ -200,6 +199,12 @@ function remoteRequest(d) {
         .then(json => console.log(json))
 }
 
+function remoteRequestAll() {
+    fetch(`/requestAll`)
+        .then(response => response.text())
+        .then(response_text => console.log(response_text))
+}
+
 //Complexidade muito alta, mudar para set/map
 function updateNodes(newNodes) {
 
@@ -278,14 +283,31 @@ function getQueue() {
         if (data.owner == null) {
             current_owner = []
         } else {
+            if (current_owner !== "" && data.owner != current_owner) {
+                addToTable(document.getElementById('owner_history'), current_owner);
+            }
             current_owner = data.owner
         }
+        if (data.requesting != null) {
+            for (var i = 0; i < data.requesting.length; i++) {
+                addToTable(document.getElementById('requester_history'), data.requesting[i]);
+            }
+        }
+
 
     })
 
 }
 
-var stringToColour = function (str) {
+
+function addToTable(tableRef, element) {
+    var newRow = tableRef.insertRow(tableRef.rows.length);
+    var newCell = newRow.insertCell(0);
+    newCell.innerHTML = element
+    newCell.style.backgroundColor = stringToColour(element)
+}
+
+function stringToColour(str) {
     for (var i = 0, hash = 0; i < str.length; hash = str.charCodeAt(i++) + ((hash << 5) - hash)) ;
     color = Math.floor(Math.abs((Math.sin(hash) * 10000) % 1 * 16777216)).toString(16);
     return '#' + Array(6 - color.length + 1).join('0') + color;
