@@ -24,14 +24,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeCommunications.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeCommunications.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/src/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shell.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/shell.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/elements/QueueResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/elements/QueueResponse.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

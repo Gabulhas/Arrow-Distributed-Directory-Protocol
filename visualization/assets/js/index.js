@@ -12,8 +12,7 @@ var typeNames = [
 
 
 var labelsvg = d3.select("svg#legend")
-var labelwidth = +labelsvg.attr("width")
-var labelheight = +labelsvg.attr("height")
+var frozen = false
 
 function addLabel() {
 
@@ -250,6 +249,23 @@ function getData() {
     })
 }
 
+function clearHistory() {
+    for (var element of document.getElementsByTagName('tbody')) {
+        element.innerHTML = ""
+    }
+}
+
+function freeze() {
+    if (frozen) {
+        frozen = false
+        document.getElementById('freezebutton').textContent = 'Freeze'
+        clearHistory()
+    } else {
+        frozen = true
+        document.getElementById('freezebutton').textContent = 'Unfreeze'
+    }
+}
+
 function updateQueue() {
     var queueTable = document.getElementById("queue");
     queueTable.innerHTML = ""
@@ -322,6 +338,9 @@ function stringToColour(str) {
 addLabel()
 getData()
 d3.interval(function () {
+    if (frozen) {
+        return
+    }
     getData()
     getQueue()
     restart()

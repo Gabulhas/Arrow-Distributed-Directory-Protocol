@@ -88,32 +88,22 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	AllUpdates = append(AllUpdates, update)
 
 	update.Link = re.ReplaceAllString(update.Link, ``)
-	previousState := Nodes[update.MyAddress]
-
+	previous := Nodes[update.MyAddress]
 	Nodes[update.MyAddress] = update
 
-	//Se passou de waiter terminal a waiter with request
-	if previousState.Type == 4 && update.Type == 3 {
-		queueHistory = append(queueHistory, re.ReplaceAllString(update.WaiterChan, ``))
+	//Fez request e mudou para waiter
+	if update.Type == 4 {
+		requestHistory = append(requestHistory, update.MyAddress)
 	}
 
-	switch update.Type {
-	case 4:
-		requestHistory = append(requestHistory, update.MyAddress)
-		break
-	case 0, 1:
-		if currentOwner == update.MyAddress {
-			break
-		}
-
+	//Era waiter e recebeu acesso ao objeto
+	if (previous.Type == 3 && update.Type == 0) || (previous.Type == 4 && update.Type == 1) && currentOwner != update.MyAddress {
 		currentOwner = update.MyAddress
 		if len(ownerHistory) == 0 {
 			ownerHistory = append(ownerHistory, currentOwner)
-		}
-		if ownerHistory[len(ownerHistory)-1] != currentOwner {
+		} else if ownerHistory[len(ownerHistory)-1] != currentOwner {
 			ownerHistory = append(ownerHistory, currentOwner)
 		}
-		break
 	}
 
 	Mutex.Unlock()
@@ -121,9 +111,6 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode("Successful")
 
 }
-
-//TODO: Fazer Cópia do histórico
-//      e, no index.js ter uma variável que dá "track" da posição do histórico que estamos
 
 func queue(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
@@ -136,7 +123,6 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	Mutex.Lock()
 	response.Requesting = requestHistory
 	response.OwnerHistory = ownerHistory
-	response.QueueHistory = queueHistory
 	response.CurrentOwner = currentOwner
 	currentNode = Nodes[currentOwner]
 
@@ -151,9 +137,31 @@ func queue(w http.ResponseWriter, r *http.Request) {
 		currentNode = nextNode
 	}
 
+	//dever haver algoritmo mais simples que este
+	pivot := 0
+	flag := false
+	if len(queueHistory) != 0 {
+
+		for i := 0; i < len(queueHistory); i++ {
+			if pivot < len(response.QueueNodes) {
+				if queueHistory[i] == response.QueueNodes[pivot] {
+					pivot = pivot + 1
+					flag = true
+				} else if flag {
+					break
+				}
+
+			}
+		}
+
+		for i := pivot; i < len(response.QueueNodes); i++ {
+			response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
+		}
+	}
+
 	requestHistory = nil
 	ownerHistory = nil
-	queueHistory = nil
+	queueHistory = response.QueueNodes
 	Mutex.Unlock()
 
 	json.NewEncoder(w).Encode(response)
