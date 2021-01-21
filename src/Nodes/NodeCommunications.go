@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var max_retries = 4
+var maxRetries = 4
 
 func (node *Node) SendThroughLink(accessRequest Channels.AccessRequest) {
 	go sendDataTo(node.Link, accessRequest)
@@ -30,7 +30,7 @@ func sendDataTo(channel string, data interface{}) {
 	}
 	retries := 0
 
-	for retries < max_retries {
+	for retries < maxRetries {
 
 		resp, err := http.Post(channel, "application/json", bytes.NewBuffer(message))
 		if err != nil {
@@ -64,7 +64,7 @@ func (node *Node) UpdateVisualization() {
 
 	retries := 0
 
-	for retries < max_retries {
+	for retries < maxRetries {
 		resp, err := http.Post(node.VisAddress, "application/json", bytes.NewBuffer(message))
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)

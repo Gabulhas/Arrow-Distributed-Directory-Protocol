@@ -262,7 +262,7 @@ function updateQueue() {
 
     var ownerTable = document.getElementById("owner_table")
     ownerTable.innerText = ""
-    if (current_owner != "") {
+    if (current_owner !== "") {
         var newRow = ownerTable.insertRow(0)
         var newCell = newRow.insertCell(0)
         newCell.innerHTML = current_owner
@@ -280,18 +280,18 @@ function getQueue() {
         } else {
             queue_elements = data.queue_nodes
         }
-        if (data.owner == null) {
-            current_owner = []
-        } else {
-            if (current_owner !== "" && data.owner != current_owner) {
-                addToTable(document.getElementById('owner_history'), current_owner);
-            }
-            current_owner = data.owner
+        if (data.current_owner != null && data.current_owner !== "") {
+            current_owner = data.current_owner
+        }
+        if (data.owner_history) {
+            addListToTableId(data.owner_history, 'owner_history')
         }
         if (data.requesting != null) {
-            for (var i = 0; i < data.requesting.length; i++) {
-                addToTable(document.getElementById('requester_history'), data.requesting[i]);
-            }
+            addListToTableId(data.requesting, 'requester_history')
+        }
+
+        if (data.queue_history != null) {
+            addListToTableId(data.queue_history, 'queue_history')
         }
 
 
@@ -299,6 +299,11 @@ function getQueue() {
 
 }
 
+function addListToTableId(list, tableID) {
+    for (var i = 0; i < list.length; i++) {
+        addToTable(document.getElementById(tableID), list[i]);
+    }
+}
 
 function addToTable(tableRef, element) {
     var newRow = tableRef.insertRow(tableRef.rows.length);
@@ -321,4 +326,4 @@ d3.interval(function () {
     getQueue()
     restart()
     updateQueue()
-}, 200)
+}, 150)

@@ -11,8 +11,8 @@ import (
 
 Apenas para debug
 
-
 */
+//TODO: Remover
 
 func ShellStart() {
 	reader := bufio.NewReader(os.Stdin)

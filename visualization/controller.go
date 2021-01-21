@@ -18,8 +18,10 @@ import (
 
 var re = regexp.MustCompile(`http://|/find|/myChan`)
 var Mutex sync.Mutex
-var requestingNodes []string
-var currentOwner string
+var requestHistory []string
+var queueHistory []string
+var ownerHistory []string
+var currentOwner = ""
 
 func startServer() {
 
@@ -84,14 +86,33 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 
 	Mutex.Lock()
 	AllUpdates = append(AllUpdates, update)
+
 	update.Link = re.ReplaceAllString(update.Link, ``)
+	previousState := Nodes[update.MyAddress]
+
 	Nodes[update.MyAddress] = update
+
+	//Se passou de waiter terminal a waiter with request
+	if previousState.Type == 4 && update.Type == 3 {
+		queueHistory = append(queueHistory, re.ReplaceAllString(update.WaiterChan, ``))
+	}
+
 	switch update.Type {
 	case 4:
-		requestingNodes = append(requestingNodes, update.MyAddress)
+		requestHistory = append(requestHistory, update.MyAddress)
 		break
 	case 0, 1:
+		if currentOwner == update.MyAddress {
+			break
+		}
+
 		currentOwner = update.MyAddress
+		if len(ownerHistory) == 0 {
+			ownerHistory = append(ownerHistory, currentOwner)
+		}
+		if ownerHistory[len(ownerHistory)-1] != currentOwner {
+			ownerHistory = append(ownerHistory, currentOwner)
+		}
 		break
 	}
 
@@ -101,34 +122,38 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//TODO: Limpar código e "baixar" complexidade, por causa de dois loops
+//TODO: Fazer Cópia do histórico
+//      e, no index.js ter uma variável que dá "track" da posição do histórico que estamos
+
 func queue(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	response := new(elements.QueueResponse)
-	response.Owner = ""
-
-	Mutex.Lock()
 
 	var currentNode elements.Node
 	var nextNode elements.Node
 
-	response.Requesting = requestingNodes
-	response.Owner = currentOwner
+	Mutex.Lock()
+	response.Requesting = requestHistory
+	response.OwnerHistory = ownerHistory
+	response.QueueHistory = queueHistory
+	response.CurrentOwner = currentOwner
 	currentNode = Nodes[currentOwner]
 
-	if response.Owner == "" {
+	if currentOwner == "" {
 		Mutex.Unlock()
 		return
 	}
 
 	for currentNode.WaiterChan != "" {
 		nextNode = Nodes[re.ReplaceAllString(currentNode.WaiterChan, ``)]
-		response.QueueNode = append(response.QueueNode, nextNode.MyAddress)
+		response.QueueNodes = append(response.QueueNodes, nextNode.MyAddress)
 		currentNode = nextNode
 	}
 
-	requestingNodes = nil
+	requestHistory = nil
+	ownerHistory = nil
+	queueHistory = nil
 	Mutex.Unlock()
 
 	json.NewEncoder(w).Encode(response)

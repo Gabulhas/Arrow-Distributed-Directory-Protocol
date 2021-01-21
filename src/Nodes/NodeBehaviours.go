@@ -2,6 +2,7 @@ package Nodes
 
 import (
 	"fmt"
+	"math/rand"
 	"projeto/Channels"
 	"projeto/utils"
 	"sync"
@@ -9,6 +10,10 @@ import (
 )
 
 var Mutex = &sync.Mutex{}
+
+func init(){
+	rand.Seed(time.Now().UnixNano())
+}
 
 func (node *Node) HandleFind(accessRequest Channels.AccessRequest) {
 	Mutex.Lock()
@@ -66,7 +71,6 @@ func (node *Node) releaseObj() {
 
 }
 
-//remover recursividade
 func (node *Node) AutoRequest() {
 	var randomSleep int
 

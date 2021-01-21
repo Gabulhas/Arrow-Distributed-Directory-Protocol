@@ -1,7 +1,9 @@
 package elements
 
 type QueueResponse struct {
-	QueueNode  []string `json:"queue_nodes"`
-	Owner      string   `json:"owner"`
-	Requesting []string `json:"requesting"`
+	QueueNodes   []string `json:"queue_nodes"`
+	OwnerHistory []string `json:"owner_history"`
+	Requesting   []string `json:"requesting"`
+	QueueHistory []string `json:"queue_history"`
+	CurrentOwner string   `json:"current_owner"`
 }
