@@ -121,6 +121,13 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	var nextNode elements.Node
 
 	Mutex.Lock()
+
+	for _, node := range Nodes {
+		if node.Type < 2 {
+			currentOwner = node.MyAddress
+		}
+	}
+
 	response.Requesting = requestHistory
 	response.OwnerHistory = ownerHistory
 	response.CurrentOwner = currentOwner
@@ -139,25 +146,29 @@ func queue(w http.ResponseWriter, r *http.Request) {
 
 	//dever haver algoritmo mais simples que este
 	pivot := 0
-	flag := false
-	if len(queueHistory) != 0 {
-
-		for i := 0; i < len(queueHistory); i++ {
-			if pivot < len(response.QueueNodes) {
-				if queueHistory[i] == response.QueueNodes[pivot] {
-					pivot = pivot + 1
-					flag = true
-				} else if flag {
-					break
-				}
-
+	flag := true
+	for i := 0; i < len(queueHistory); i++ {
+		if pivot < len(response.QueueNodes) {
+			if queueHistory[i] == response.QueueNodes[pivot] {
+				pivot = i
+				flag = false
+				break
 			}
 		}
-
-		for i := pivot; i < len(response.QueueNodes); i++ {
-			response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
-		}
 	}
+
+	startPoint := len(queueHistory) - pivot
+
+	if flag {
+		startPoint = 0
+	}
+
+	for i := startPoint; i < len(response.QueueNodes); i++ {
+		response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
+	}
+	fmt.Println(queueHistory)
+	fmt.Println(response.QueueNodes)
+	fmt.Println("------------------------------------")
 
 	requestHistory = nil
 	ownerHistory = nil

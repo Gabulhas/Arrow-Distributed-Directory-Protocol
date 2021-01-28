@@ -297,11 +297,16 @@ function getQueue() {
             queue_elements = data.queue_nodes
         }
         if (data.current_owner != null && data.current_owner !== "") {
-            current_owner = data.current_owner
+            if (current_owner != data.current_owner) {
+                addToTable(document.getElementById('owner_history'), data.current_owner);
+                current_owner = data.current_owner
+            }
         }
+        /*
         if (data.owner_history) {
             addListToTableId(data.owner_history, 'owner_history')
         }
+         */
         if (data.requesting != null) {
             addListToTableId(data.requesting, 'requester_history')
         }
@@ -345,4 +350,4 @@ d3.interval(function () {
     getQueue()
     restart()
     updateQueue()
-}, 150)
+}, 200)
