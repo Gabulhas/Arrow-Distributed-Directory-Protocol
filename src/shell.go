@@ -12,8 +12,6 @@ import (
 Apenas para debug
 
 */
-//TODO: Remover
-
 func ShellStart() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -30,6 +28,7 @@ func runCommand(command string) {
 	args := strings.Split(command, " ")
 	cmd := strings.TrimSpace(args[0])
 
+	//TODO: mudar este switch
 	switch {
 	case cmd == "state":
 		selfNode.OutputState()

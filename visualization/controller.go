@@ -59,6 +59,7 @@ func data(w http.ResponseWriter, r *http.Request) {
 	var tempNodes []elements.Node
 	var tempLinks []elements.Link
 
+	Mutex.Lock()
 	for _, v := range Nodes {
 		tempNodes = append(tempNodes, v)
 
@@ -69,6 +70,7 @@ func data(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 	}
+	Mutex.Unlock()
 
 	response.Nodes = tempNodes
 	response.Links = tempLinks
@@ -88,26 +90,13 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	AllUpdates = append(AllUpdates, update)
 
 	update.Link = re.ReplaceAllString(update.Link, ``)
-	previous := Nodes[update.MyAddress]
 	Nodes[update.MyAddress] = update
 
-	//Fez request e mudou para waiter
 	if update.Type == 4 {
 		requestHistory = append(requestHistory, update.MyAddress)
 	}
 
-	//Era waiter e recebeu acesso ao objeto
-	if (previous.Type == 3 && update.Type == 0) || (previous.Type == 4 && update.Type == 1) && currentOwner != update.MyAddress {
-		currentOwner = update.MyAddress
-		if len(ownerHistory) == 0 {
-			ownerHistory = append(ownerHistory, currentOwner)
-		} else if ownerHistory[len(ownerHistory)-1] != currentOwner {
-			ownerHistory = append(ownerHistory, currentOwner)
-		}
-	}
-
 	Mutex.Unlock()
-
 	json.NewEncoder(w).Encode("Successful")
 
 }
@@ -121,6 +110,8 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	var nextNode elements.Node
 
 	Mutex.Lock()
+	response.Requesting = requestHistory
+	requestHistory = nil
 
 	for _, node := range Nodes {
 		if node.Type < 2 {
@@ -128,7 +119,7 @@ func queue(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response.Requesting = requestHistory
+
 	response.OwnerHistory = ownerHistory
 	response.CurrentOwner = currentOwner
 	currentNode = Nodes[currentOwner]
@@ -143,6 +134,7 @@ func queue(w http.ResponseWriter, r *http.Request) {
 		response.QueueNodes = append(response.QueueNodes, nextNode.MyAddress)
 		currentNode = nextNode
 	}
+	Mutex.Unlock()
 
 	//dever haver algoritmo mais simples que este
 	pivot := 0
@@ -170,10 +162,8 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(response.QueueNodes)
 	fmt.Println("------------------------------------")
 
-	requestHistory = nil
 	ownerHistory = nil
 	queueHistory = response.QueueNodes
-	Mutex.Unlock()
 
 	json.NewEncoder(w).Encode(response)
 }

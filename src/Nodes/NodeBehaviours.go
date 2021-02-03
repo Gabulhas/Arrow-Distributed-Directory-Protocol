@@ -51,7 +51,6 @@ func (node *Node) HandleFind(accessRequest Channels.AccessRequest) {
 }
 
 func (node *Node) releaseObj() {
-	Mutex.Lock()
 	defer Mutex.Unlock()
 
 	randomSleep := utils.RandomRange(1, 2)
@@ -63,6 +62,7 @@ func (node *Node) releaseObj() {
 
 	accessObject := Channels.GiveAccess{WaiterChan: node.WaiterChan}
 
+	Mutex.Lock()
 	node.SendObjectAccess(accessObject)
 	node.Idle(node.Link)
 

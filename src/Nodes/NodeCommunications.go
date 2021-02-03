@@ -22,6 +22,10 @@ func (node *Node) SendObjectAccess(giveAccess Channels.GiveAccess) {
 	go sendDataTo(node.WaiterChan, giveAccess)
 }
 
+func (node *Node) UpdateVisualization(){
+	go sendDataTo(node.VisAddress, node)
+}
+
 func sendDataTo(channel string, data interface{}) {
 
 	message, err := json.Marshal(data)
@@ -37,7 +41,7 @@ func sendDataTo(channel string, data interface{}) {
 			fmt.Fprintln(os.Stderr, err)
 
 			retries++
-			time.Sleep(time.Second * time.Duration(5))
+			time.Sleep(time.Second * time.Duration(4))
 
 			continue
 		}
@@ -54,7 +58,7 @@ func sendDataTo(channel string, data interface{}) {
 	}
 
 }
-
+/*
 func (node *Node) UpdateVisualization() {
 
 	message, err := json.Marshal(node)
@@ -84,3 +88,4 @@ func (node *Node) UpdateVisualization() {
 
 	}
 }
+*/

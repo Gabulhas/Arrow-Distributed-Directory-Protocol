@@ -22,10 +22,8 @@ var indexRegex, _ = regexp.Compile(`<index>`)
 var addressRegex, _ = regexp.Compile(`<address>`)
 var typeRegex, _ = regexp.Compile(`<type>`)
 var linkRegex, _ = regexp.Compile(`<link>`)
-var vis_addressRegex, _ = regexp.Compile(`<vis_address>`)
+var visAddressregex, _ = regexp.Compile(`<vis_address>`)
 var portRegex, _ = regexp.Compile(`<port>`)
-
-var template = "docker run --env address:<address> type=<type> link=<link> VIS_ADDRESS= <vis_address>/updateState -p <port>:<port> --interactive --tty"
 
 var DockerComposeStart = `
 version: "3.8"
@@ -52,7 +50,7 @@ var templateDockerCompose = `
 `
 
 var nodes []NodeConfigs
-var vis_address string
+var visAddress string
 
 /*
 
@@ -64,7 +62,7 @@ Args: 1 - name of .csv file inside the csv_files directory
 
 func main() {
 
-	vis_address = os.Args[2]
+	visAddress = os.Args[2]
 
 	readCSV()
 	toDockerCompose()
@@ -127,7 +125,7 @@ func toDockerCompose() {
 			link = ""
 		}
 		service = linkRegex.ReplaceAllString(service, link)
-		service = vis_addressRegex.ReplaceAllString(service, vis_address)
+		service = visAddressregex.ReplaceAllString(service, visAddress)
 		service = portRegex.ReplaceAllString(service, fmt.Sprintf("%d", port))
 
 		DockerComposeStart = DockerComposeStart + service

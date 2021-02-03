@@ -10,7 +10,7 @@ type Node struct {
 	WaiterChan string   //Channel de quem fez pedido
 	MyAddress  string   //Endereço do Node
 	VisAddress string   //Endereço onde faz "update" do seu estado atual para visualização
-	Obj        bool 	//mudar mais tarde, só diz se tem ou não Obj
+	Obj        bool 	//Se tem objeto ou não (redundante)
 }
 
 func (node *Node) OutputState() {

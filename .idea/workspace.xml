@@ -25,9 +25,16 @@
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/Node.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/Node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeBehaviours.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeCommunications.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeCommunications.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Nodes/NodeTranformations.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodes/NodeTranformations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shell.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/shell.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/concurrentRequest/concurrentRequest.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/ring.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/networkRead.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/elements/VisResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/elements/VisResponse.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
