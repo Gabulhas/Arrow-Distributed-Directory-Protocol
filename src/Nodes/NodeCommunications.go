@@ -26,7 +26,7 @@ func (node *Node) UpdateVisualization(){
 	go sendDataTo(node.VisAddress, node)
 }
 
-func sendDataTo(channel string, data interface{}) {
+func sendDataTo(toURL string, data interface{}) {
 
 	message, err := json.Marshal(data)
 	if err != nil {
@@ -36,7 +36,7 @@ func sendDataTo(channel string, data interface{}) {
 
 	for retries < maxRetries {
 
-		resp, err := http.Post(channel, "application/json", bytes.NewBuffer(message))
+		resp, err := http.Post(toURL, "application/json", bytes.NewBuffer(message))
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 
@@ -58,34 +58,3 @@ func sendDataTo(channel string, data interface{}) {
 	}
 
 }
-/*
-func (node *Node) UpdateVisualization() {
-
-	message, err := json.Marshal(node)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	retries := 0
-
-	for retries < maxRetries {
-		resp, err := http.Post(node.VisAddress, "application/json", bytes.NewBuffer(message))
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			retries++
-			time.Sleep(time.Second * time.Duration(3))
-			continue
-
-		}
-
-		_, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			resp.Body.Close()
-			log.Fatal(err)
-		}
-		resp.Body.Close()
-		break
-
-	}
-}
-*/
