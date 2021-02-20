@@ -34,6 +34,7 @@ func startServer() {
 	r.HandleFunc("/data", data).Methods("GET")
 	r.HandleFunc("/queue", queue).Methods("GET")
 	r.HandleFunc("/updateState", updateState).Methods("POST")
+	// TODO: remover /logs, visto que não apresentam a ordem correta de chegada
 	r.HandleFunc("/logs", getLogs).Methods("GET")
 	r.HandleFunc("/requestAll", requestAll).Methods("GET")
 

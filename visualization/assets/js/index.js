@@ -6,6 +6,8 @@ var colors = [
     "rgb(41, 98, 255)"
 ]
 
+var link_color = '#999999'
+
 var typeNames = [
     "Owner With Request", "Owner Terminal", "Idle", "Waiter With Request", "Waiter Terminal"
 ]
@@ -13,6 +15,7 @@ var typeNames = [
 
 var labelsvg = d3.select("svg#legend")
 var frozen = false
+var movement = false
 
 function addLabel() {
 
@@ -60,8 +63,9 @@ svg
     })
     .append('svg:path')
     .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-    .attr('fill', '#999')
-    .style('stroke', 'none');
+    .attr('fill', link_color)
+    .
+    style('stroke', 'none');
 
 var
     nodes = [],
@@ -151,6 +155,10 @@ function restart() {
 
 
 function ticked() {
+
+    if (movement) {
+        return
+    }
     node.attr("cx", function (d) {
         return d.x;
     })
@@ -202,6 +210,10 @@ function remoteRequestAll() {
     fetch(`/requestAll`)
         .then(response => response.text())
         .then(response_text => console.log(response_text))
+}
+
+function toggleMovement() {
+    movement = !movement
 }
 
 //Complexidade muito alta, mudar para set/map

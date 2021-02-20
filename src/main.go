@@ -23,6 +23,7 @@ func init() {
 
 	flag.Parse()
 
+	//TODO: se for IDLE é necessário o LINK!
 	if *myType < 0 || *myType > 4 || *myAddress == ""{
 		flag.PrintDefaults()
 		os.Exit(-1)
