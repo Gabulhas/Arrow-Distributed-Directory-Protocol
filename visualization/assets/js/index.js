@@ -15,7 +15,8 @@ var typeNames = [
 
 var labelsvg = d3.select("svg#legend")
 var frozen = false
-var movement = false
+var movement = true
+var directory_mode = true
 
 function addLabel() {
 
@@ -64,8 +65,7 @@ svg
     .append('svg:path')
     .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
     .attr('fill', link_color)
-    .
-    style('stroke', 'none');
+    .style('stroke', 'none');
 
 var
     nodes = [],
@@ -103,7 +103,7 @@ function restart() {
     node = node.enter()
         .append("circle").merge(node).attr("fill", function (d) {
             return colors[d.Type]
-        }).attr("r", 8)
+        }).attr("r", 8).attr("class", "node")
         .on("mouseover", function (d) {
 
 
@@ -156,16 +156,12 @@ function restart() {
 
 function ticked() {
 
-    if (movement) {
-        return
-    }
     node.attr("cx", function (d) {
         return d.x;
     })
         .attr("cy", function (d) {
             return d.y;
         })
-
 
     link.attr("x1", function (d) {
         return d.source.x;
@@ -213,7 +209,28 @@ function remoteRequestAll() {
 }
 
 function toggleMovement() {
+    if (movement) {
+        d3.selectAll(".node").each(
+            function (d) {
+                d.fixed = true;
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+        )
+    } else {
+        d3.selectAll(".node").each(
+            function (d) {
+                console.log(d)
+                d.fixed = false;
+                delete d.fx
+                delete d.fy
+            }
+        )
+        simulation.alpha(1).restart();
+    }
     movement = !movement
+
+
 }
 
 //Complexidade muito alta, mudar para set/map
@@ -241,22 +258,24 @@ function updateNodes(newNodes) {
 function getData() {
     d3.json("/data", function (error, data) {
         if (error) throw error;
-
-        //nodes = data.nodes
-
+        let type_connection = "links";
 
         if (data.nodes == null) {
             nodes = []
         } else {
-            //aqui ele deve só fazer alteraões, não fazer reset
             updateNodes(data.nodes)
         }
-        if (data.links == null) {
+
+        if (!directory_mode) {
+            type_connection = "queue_cons"
+        }
+
+        if (data[type_connection] == null) {
             links = []
         } else {
-
-            links = data.links
+            links = data[type_connection]
         }
+
 
     })
 }
@@ -273,9 +292,19 @@ function freeze() {
         document.getElementById('freezebutton').textContent = 'Freeze'
         clearHistory()
     } else {
-        frozen = true
         document.getElementById('freezebutton').textContent = 'Unfreeze'
     }
+    frozen = !frozen
+}
+
+
+function changeMode() {
+    if (directory_mode) {
+        document.getElementById("modebutton").textContent = 'Directory Mode'
+    } else {
+        document.getElementById("modebutton").textContent = 'Queue Mode'
+    }
+    directory_mode = !directory_mode
 }
 
 function updateQueue() {
@@ -299,7 +328,6 @@ function updateQueue() {
     }
 
 }
-
 
 function getQueue() {
     d3.json("/queue", function (error, data) {
@@ -362,4 +390,4 @@ d3.interval(function () {
     getQueue()
     restart()
     updateQueue()
-}, 200)
+}, 30)

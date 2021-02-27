@@ -1,13 +1,15 @@
 package main
 
-import "visualization/elements"
+import (
+	"sync"
+	"visualization/elements"
+)
 
-var Nodes map[string]elements.Node
-var Links []elements.Link
+var Nodes sync.Map
+var Links []elements.Connection
 var AllUpdates []elements.Node
 
 func init(){
-	Nodes = make(map[string]elements.Node)
 	AllUpdates = make([]elements.Node, 0)
 }
 

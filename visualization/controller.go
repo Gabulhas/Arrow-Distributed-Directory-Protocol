@@ -15,12 +15,14 @@ import (
 )
 
 //TODO: Mudar para package
+//TODO: dividir as funções em vários ficheiros
 
 var re = regexp.MustCompile(`http://|/find|/myChan`)
-var Mutex sync.Mutex
 var requestHistory []string
 var queueHistory []string
 var ownerHistory []string
+var Queues [][]elements.Node
+var QueuesMutex = &sync.Mutex{}
 var currentOwner = ""
 
 func startServer() {
@@ -58,23 +60,33 @@ func data(w http.ResponseWriter, r *http.Request) {
 	response := new(elements.VisResponse)
 
 	var tempNodes []elements.Node
-	var tempLinks []elements.Link
+	var tempLinks []elements.Connection
+	var tempQueueCons []elements.Connection
 
-	Mutex.Lock()
-	for _, v := range Nodes {
+	Nodes.Range(func(key, value interface{}) bool {
+		v := value.(elements.Node)
 		tempNodes = append(tempNodes, v)
 
 		if v.Link != "" {
-			tempLinks = append(tempLinks, elements.Link{
+			tempLinks = append(tempLinks, elements.Connection{
 				Source: v.MyAddress,
 				Target: v.Link,
 			})
 		}
-	}
-	Mutex.Unlock()
+		if v.WaiterChan != "" {
+			tempQueueCons = append(tempQueueCons, elements.Connection{
+				Source: v.MyAddress,
+				Target: v.WaiterChan,
+			})
+		}
+
+		return true
+	},
+	)
 
 	response.Nodes = tempNodes
 	response.Links = tempLinks
+	response.QueueCons = tempQueueCons
 
 	json.NewEncoder(w).Encode(response)
 }
@@ -87,19 +99,119 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	var update elements.Node
 	_ = json.NewDecoder(r.Body).Decode(&update)
 
-	Mutex.Lock()
 	AllUpdates = append(AllUpdates, update)
 
 	update.Link = re.ReplaceAllString(update.Link, ``)
-	Nodes[update.MyAddress] = update
+	update.WaiterChan = re.ReplaceAllString(update.WaiterChan, ``)
 
-	if update.Type == 4 {
-		requestHistory = append(requestHistory, update.MyAddress)
-	}
+	valueInterface, _ := Nodes.Load(update.MyAddress)
 
-	Mutex.Unlock()
+	Nodes.Store(update.MyAddress, update)
+
 	json.NewEncoder(w).Encode("Successful")
 
+	if update.Type == 2 {
+		return
+	}
+	QueuesMutex.Lock()
+	updateQueues(update, valueInterface)
+	fmt.Println(Queues)
+	//TODO: remover
+	if len(Queues) > 0 {
+		fmt.Println(Queues[0][0].WaiterChan)
+	}
+	QueuesMutex.Unlock()
+}
+
+func updateQueues(update elements.Node, valueInterface interface{}) {
+
+	previous, ok := valueInterface.(elements.Node)
+
+	switch update.Type {
+	case 0:
+		if !ok {
+			return
+		}
+
+
+		if previous.Type == 3 {
+			for i, queue := range Queues {
+
+				if queue[0].MyAddress == update.MyAddress {
+					Queues[i] = Queues[i][1:]
+					if len(Queues[i]) == 0{
+						Queues = removeFromQueue(Queues, i)
+
+					}
+				}
+			}
+
+		}
+		if previous.Type == 1 {
+			for i, queue := range Queues {
+				if queue[0].MyAddress == update.MyAddress {
+					temp := queue[1:]
+					Queues[i] = Queues[0]
+					Queues[0] = temp
+					return
+				}
+			}
+		}
+		break
+	case 1:
+		for i, queue := range Queues {
+			if queue[0].MyAddress == update.MyAddress {
+				if len(queue) == 1 {
+					Queues = removeFromQueue(Queues, i)
+				} else {
+					Queues[i] = Queues[i][1:]
+				}
+			}
+		}
+		break
+	case 3:
+		if !ok {
+			return
+		}
+		if previous.Type == 3 {
+			return
+		}
+
+		firstQueue := -1
+		secondQueue := -1
+
+		for i, queue := range Queues {
+			if queue[len(queue)-1].MyAddress == update.MyAddress {
+				firstQueue = i
+			}
+			if queue[0].MyAddress == update.WaiterChan {
+				secondQueue = i
+			}
+		}
+
+		if firstQueue == -1 || secondQueue == -1 {
+			fmt.Println("IMPOSSÍVEL")
+			return
+		}
+		Queues[firstQueue] = append(Queues[firstQueue], Queues[secondQueue]...)
+		Queues = removeFromQueue(Queues, secondQueue)
+
+		break
+	case 4:
+		for i, queue := range Queues {
+			if queue[len(queue) - 1].WaiterChan == update.MyAddress {
+				Queues[i] = append(Queues[i], update)
+				return
+			}
+		}
+		Queues = append(Queues, []elements.Node{update})
+		break
+	}
+
+}
+
+func removeFromQueue(queue [][]elements.Node, i int) [][]elements.Node {
+	return append(queue[:i], queue[i+1:]...)
 }
 
 func queue(w http.ResponseWriter, r *http.Request) {
@@ -107,64 +219,90 @@ func queue(w http.ResponseWriter, r *http.Request) {
 
 	response := new(elements.QueueResponse)
 
-	var currentNode elements.Node
-	var nextNode elements.Node
+	//var currentNode elements.Node
+	//var nextNode elements.Node
+	var QueueNodesAddresses []string
 
-	Mutex.Lock()
-	response.Requesting = requestHistory
-	requestHistory = nil
-
-	for _, node := range Nodes {
-		if node.Type < 2 {
-			currentOwner = node.MyAddress
+	QueuesMutex.Lock()
+	if len(Queues) > 0 {
+		for _, node := range Queues[0] {
+			QueueNodesAddresses = append(QueueNodesAddresses, node.MyAddress)
 		}
 	}
+	QueuesMutex.Unlock()
 
+	response.QueueNodes = QueueNodesAddresses
+	response.Requesting = requestHistory
+	/*
+		requestHistory = nil
 
-	response.OwnerHistory = ownerHistory
-	response.CurrentOwner = currentOwner
-	currentNode = Nodes[currentOwner]
+		Nodes.Range(func(key, value interface{}) bool {
+			node := value.(elements.Node)
+			if node.Type < 2 {
+				currentOwner = node.MyAddress
+			}
+			return true
+		},
+		)
 
-	if currentOwner == "" {
-		Mutex.Unlock()
-		return
-	}
-
-	for currentNode.WaiterChan != "" {
-		nextNode = Nodes[re.ReplaceAllString(currentNode.WaiterChan, ``)]
-		response.QueueNodes = append(response.QueueNodes, nextNode.MyAddress)
-		currentNode = nextNode
-	}
-	Mutex.Unlock()
-
-	//dever haver algoritmo mais simples que este
-	pivot := 0
-	flag := true
-	for i := 0; i < len(queueHistory); i++ {
-		if pivot < len(response.QueueNodes) {
-			if queueHistory[i] == response.QueueNodes[pivot] {
-				pivot = i
-				flag = false
-				break
+	*/
+	/*
+		for _, node := range Nodes {
+			if node.Type < 2 {
+				currentOwner = node.MyAddress
 			}
 		}
-	}
+	*/
 
-	startPoint := len(queueHistory) - pivot
+	/*
+		response.OwnerHistory = ownerHistory
+		response.CurrentOwner = currentOwner
+		tempStruct, _ := Nodes.Load(currentOwner)
 
-	if flag {
-		startPoint = 0
-	}
+		currentNode = tempStruct.(elements.Node)
 
-	for i := startPoint; i < len(response.QueueNodes); i++ {
-		response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
-	}
-	fmt.Println(queueHistory)
-	fmt.Println(response.QueueNodes)
-	fmt.Println("------------------------------------")
+		//fmt.Println("currentNode", currentNode)
+		if currentOwner == "" {
+			return
+		}
 
-	ownerHistory = nil
-	queueHistory = response.QueueNodes
+		for currentNode.WaiterChan != "" {
+			tempStruct, _ := Nodes.Load(re.ReplaceAllString(currentNode.WaiterChan, ``))
+			nextNode = tempStruct.(elements.Node)
+
+			response.QueueNodes = append(response.QueueNodes, nextNode.MyAddress)
+			currentNode = nextNode
+		}
+
+		//dever haver algoritmo mais simples que este
+		pivot := 0
+		flag := true
+		for i := 0; i < len(queueHistory); i++ {
+			if pivot < len(response.QueueNodes) {
+				if queueHistory[i] == response.QueueNodes[pivot] {
+					pivot = i
+					flag = false
+					break
+				}
+			}
+		}
+
+		startPoint := len(queueHistory) - pivot
+
+		if flag {
+			startPoint = 0
+		}
+
+		for i := startPoint; i < len(response.QueueNodes); i++ {
+			response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
+		}
+		/*
+		fmt.Println(queueHistory)
+		fmt.Println(response.QueueNodes)
+		fmt.Println("------------------------------------")
+				ownerHistory = nil
+				queueHistory = response.QueueNodes
+	*/
 
 	json.NewEncoder(w).Encode(response)
 }
@@ -188,10 +326,13 @@ func requestAll(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 
-	for _, element := range Nodes {
+	Nodes.Range(func(key, value interface{}) bool {
+		element := value.(elements.Node)
 		wg.Add(1)
 		go remoteRequest(element.MyAddress, &wg)
-	}
+		return true
+	},
+	)
 	wg.Wait()
 	w.Write([]byte("Successful"))
 }
