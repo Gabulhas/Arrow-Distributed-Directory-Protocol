@@ -22,8 +22,11 @@ var requestHistory []string
 var queueHistory []string
 var ownerHistory []string
 var Queues [][]elements.Node
-var QueuesMutex = &sync.Mutex{}
+var QueuesMutex = &sync.RWMutex{}
 var currentOwner = ""
+var totalQueuesPrinted = 0
+
+//TODO: mudar de Mutex para RW mutex
 
 func startServer() {
 
@@ -99,8 +102,6 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	var update elements.Node
 	_ = json.NewDecoder(r.Body).Decode(&update)
 
-	AllUpdates = append(AllUpdates, update)
-
 	update.Link = re.ReplaceAllString(update.Link, ``)
 	update.WaiterChan = re.ReplaceAllString(update.WaiterChan, ``)
 
@@ -115,12 +116,53 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	}
 	QueuesMutex.Lock()
 	updateQueues(update, valueInterface)
-	fmt.Println(Queues)
-	//TODO: remover
-	if len(Queues) > 0 {
-		fmt.Println(Queues[0][0].WaiterChan)
-	}
 	QueuesMutex.Unlock()
+
+	QueuesMutex.RLock()
+	totalQueuesPrinted = totalQueuesPrinted + 1
+	PrettyPrintQueue(Queues)
+	AllUpdates = append(AllUpdates, OtherPrintQueue(Queues))
+	QueuesMutex.RUnlock()
+}
+
+func OtherPrintQueue(queues [][]elements.Node) string {
+	finalString := fmt.Sprintf("%d-", totalQueuesPrinted)
+	for _, tempQueue := range queues {
+		for _, node := range tempQueue {
+			finalString = finalString + fmt.Sprintf("%s ", node.MyAddress)
+		}
+		finalString = finalString + " # "
+	}
+	return finalString
+
+}
+
+func PrettyPrintQueue(queues [][]elements.Node) {
+	finalString := fmt.Sprintf("%d", totalQueuesPrinted)
+	for _, tempQueue := range queues {
+
+		switch len(tempQueue) {
+		case 0:
+			finalString = finalString + fmt.Sprintf("ERROR")
+			break
+		case 1:
+			finalString = finalString + fmt.Sprintf("[%s]", tempQueue[0].MyAddress)
+			break
+		default:
+			finalString = finalString + fmt.Sprintf("[%s -> %s]", tempQueue[0].MyAddress, tempQueue[len(tempQueue)-1].MyAddress)
+			break
+		}
+	}
+	fmt.Println(finalString)
+}
+
+
+func nodeChange() {
+	for {
+		select {
+
+		}
+	}
 }
 
 func updateQueues(update elements.Node, valueInterface interface{}) {
@@ -133,13 +175,12 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 			return
 		}
 
-
 		if previous.Type == 3 {
 			for i, queue := range Queues {
 
 				if queue[0].MyAddress == update.MyAddress {
 					Queues[i] = Queues[i][1:]
-					if len(Queues[i]) == 0{
+					if len(Queues[i]) == 0 {
 						Queues = removeFromQueue(Queues, i)
 
 					}
@@ -190,7 +231,30 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 		}
 
 		if firstQueue == -1 || secondQueue == -1 {
-			fmt.Println("IMPOSSÍVEL")
+
+			var temp elements.Node
+			foundSecond := false
+
+			if valueInterface, ok := Nodes.Load(update.MyAddress); ok {
+				temp, _ = valueInterface.(elements.Node)
+				foundSecond = true
+			}
+			if firstQueue == -1 {
+				for i, queue := range Queues {
+					if queue[len(queue)-1].WaiterChan == update.MyAddress {
+						Queues[i] = append(Queues[i], update)
+						if foundSecond {
+							Queues[i] = append(Queues[i], temp)
+							foundSecond = false
+						}
+					}
+				}
+			}
+			if secondQueue == -1 && foundSecond && firstQueue != -1{
+				Queues[firstQueue] = append(Queues[firstQueue], temp)
+			}
+
+			fmt.Printf("IMPOSSÍVEL %d:%s %d:%s\n", firstQueue, update.WaiterChan, secondQueue, update.MyAddress)
 			return
 		}
 		Queues[firstQueue] = append(Queues[firstQueue], Queues[secondQueue]...)
@@ -199,7 +263,7 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 		break
 	case 4:
 		for i, queue := range Queues {
-			if queue[len(queue) - 1].WaiterChan == update.MyAddress {
+			if queue[len(queue)-1].WaiterChan == update.MyAddress {
 				Queues[i] = append(Queues[i], update)
 				return
 			}
@@ -223,14 +287,13 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	//var nextNode elements.Node
 	var QueueNodesAddresses []string
 
-	QueuesMutex.Lock()
+	QueuesMutex.RLock()
 	if len(Queues) > 0 {
 		for _, node := range Queues[0] {
 			QueueNodesAddresses = append(QueueNodesAddresses, node.MyAddress)
 		}
 	}
-	QueuesMutex.Unlock()
-
+	QueuesMutex.RUnlock()
 	response.QueueNodes = QueueNodesAddresses
 	response.Requesting = requestHistory
 	/*
@@ -313,8 +376,8 @@ func getLogs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	var sb strings.Builder
 	sb.Grow(len(AllUpdates))
-	for i, elem := range AllUpdates {
-		fmt.Fprintf(&sb, "\n%d: %s, %s, %d", i, elem.MyAddress, elem.Link, elem.Type)
+	for _, logStamp := range AllUpdates {
+		fmt.Fprintf(&sb, "%s\n", logStamp)
 	}
 	w.Write([]byte(sb.String()))
 

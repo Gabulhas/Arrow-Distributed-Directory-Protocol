@@ -24,15 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/star.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tools/networkExamples/dockerfiles/star.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/temp.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/assets/testdata.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/elements/Link.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/elements/Connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/elements/VisResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/elements/VisResponse.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +71,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="ReaderModeSettings">
     <option name="enabled" value="false" />
