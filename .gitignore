@@ -2,3 +2,4 @@
 .idea
 .idea/*
 TODO.txt
+docker-compose.yml

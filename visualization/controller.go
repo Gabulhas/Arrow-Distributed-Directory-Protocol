@@ -23,10 +23,13 @@ var queueHistory []string
 var ownerHistory []string
 var Queues [][]elements.Node
 var QueuesMutex = &sync.RWMutex{}
-var currentOwner = ""
+var ChangeChannel chan elements.NodeChange
 var totalQueuesPrinted = 0
 
-//TODO: mudar de Mutex para RW mutex
+func init() {
+	ChangeChannel = make(chan elements.NodeChange, 20)
+	go nodeChange()
+}
 
 func startServer() {
 
@@ -105,24 +108,14 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	update.Link = re.ReplaceAllString(update.Link, ``)
 	update.WaiterChan = re.ReplaceAllString(update.WaiterChan, ``)
 
-	valueInterface, _ := Nodes.Load(update.MyAddress)
-
+	previousInterface, _ := Nodes.Load(update.MyAddress)
 	Nodes.Store(update.MyAddress, update)
 
 	json.NewEncoder(w).Encode("Successful")
 
-	if update.Type == 2 {
-		return
+	if update.Type != 2 {
+		ChangeChannel <- elements.NodeChange{Update: update, Previous: previousInterface}
 	}
-	QueuesMutex.Lock()
-	updateQueues(update, valueInterface)
-	QueuesMutex.Unlock()
-
-	QueuesMutex.RLock()
-	totalQueuesPrinted = totalQueuesPrinted + 1
-	PrettyPrintQueue(Queues)
-	AllUpdates = append(AllUpdates, OtherPrintQueue(Queues))
-	QueuesMutex.RUnlock()
 }
 
 func OtherPrintQueue(queues [][]elements.Node) string {
@@ -156,11 +149,21 @@ func PrettyPrintQueue(queues [][]elements.Node) {
 	fmt.Println(finalString)
 }
 
-
 func nodeChange() {
 	for {
 		select {
+		case newChange := <-ChangeChannel:
+			QueuesMutex.Lock()
+			updateQueues(newChange.Update, newChange.Previous)
+			QueuesMutex.Unlock()
 
+			//TODO: apenas para debug
+			QueuesMutex.RLock()
+			totalQueuesPrinted = totalQueuesPrinted + 1
+			PrettyPrintQueue(Queues)
+			AllUpdates = append(AllUpdates, OtherPrintQueue(Queues))
+			QueuesMutex.RUnlock()
+			break
 		}
 	}
 }
@@ -250,7 +253,7 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 					}
 				}
 			}
-			if secondQueue == -1 && foundSecond && firstQueue != -1{
+			if secondQueue == -1 && foundSecond && firstQueue != -1 {
 				Queues[firstQueue] = append(Queues[firstQueue], temp)
 			}
 
