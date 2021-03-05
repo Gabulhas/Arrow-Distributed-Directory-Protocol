@@ -16,7 +16,6 @@ import (
 
 //TODO: Mudar para package
 //TODO: dividir as funções em vários ficheiros
-
 var re = regexp.MustCompile(`http://|/find|/myChan`)
 var requestHistory []string
 var queueHistory []string
@@ -24,10 +23,16 @@ var ownerHistory []string
 var Queues [][]elements.Node
 var QueuesMutex = &sync.RWMutex{}
 var ChangeChannel chan elements.NodeChange
+
+//Lookup table
+var NodesInQueue map[string]struct{}
+
+//Debug
 var totalQueuesPrinted = 0
 
 func init() {
-	ChangeChannel = make(chan elements.NodeChange, 20)
+	ChangeChannel = make(chan elements.NodeChange, 200)
+	NodesInQueue = make(map[string]struct{})
 	go nodeChange()
 }
 
@@ -42,7 +47,7 @@ func startServer() {
 	r.HandleFunc("/data", data).Methods("GET")
 	r.HandleFunc("/queue", queue).Methods("GET")
 	r.HandleFunc("/updateState", updateState).Methods("POST")
-	// TODO: remover /logs, visto que não apresentam a ordem correta de chegada
+
 	r.HandleFunc("/logs", getLogs).Methods("GET")
 	r.HandleFunc("/requestAll", requestAll).Methods("GET")
 
@@ -168,6 +173,8 @@ func nodeChange() {
 	}
 }
 
+//TODO: Limpar o código e dividir entre controller, queue e graph (ficheiros)
+
 func updateQueues(update elements.Node, valueInterface interface{}) {
 
 	previous, ok := valueInterface.(elements.Node)
@@ -180,13 +187,11 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 
 		if previous.Type == 3 {
 			for i, queue := range Queues {
-
 				if queue[0].MyAddress == update.MyAddress {
-					Queues[i] = Queues[i][1:]
-					if len(Queues[i]) == 0 {
-						Queues = removeFromQueue(Queues, i)
-
+					if len(queue) > 1 {
+						Queues[i] = Queues[i][1:]
 					}
+					return
 				}
 			}
 
@@ -201,6 +206,20 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 				}
 			}
 		}
+		if previous.Type == 0 {
+
+			for i, queue := range Queues {
+				if queue[0].MyAddress == update.WaiterChan {
+					temp := queue
+					Queues[i] = Queues[0]
+					Queues[0] = temp
+					return
+				}
+			}
+		}
+		//Remove from lookuptable
+		delete(NodesInQueue, update.MyAddress)
+
 		break
 	case 1:
 		for i, queue := range Queues {
@@ -221,8 +240,15 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 			return
 		}
 
+		var temp elements.Node
+		if valueInterface, ok := Nodes.Load(update.WaiterChan); ok {
+			temp, _ = valueInterface.(elements.Node)
+		}
+
 		firstQueue := -1
 		secondQueue := -1
+		pointingToFirst := -1
+		secondPoinintTo := -1
 
 		for i, queue := range Queues {
 			if queue[len(queue)-1].MyAddress == update.MyAddress {
@@ -231,33 +257,53 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 			if queue[0].MyAddress == update.WaiterChan {
 				secondQueue = i
 			}
+			if queue[len(queue)-1].WaiterChan == update.MyAddress {
+				pointingToFirst = i
+			}
+			if queue[0].MyAddress == temp.WaiterChan {
+			}
+		}
+		if firstQueue == -1 || secondQueue == -1 {
+			fmt.Printf("IMPOSSÍVEL %d:%s %d:%s\n", firstQueue, update.MyAddress, secondQueue, update.WaiterChan)
+
+			//ver se alguém aponta para o novo update
+
+			// Chegou info. que o Node mudou mas ainda não chegou a informação que passou a ser Waiter
+			//Adicionamos uma Queue com os dois
+			if firstQueue == -1 && secondQueue == -1 {
+				if pointingToFirst == -1 {
+					Queues = append(Queues, []elements.Node{update, temp})
+				} else {
+					Queues[pointingToFirst] = append(Queues[pointingToFirst], update, temp)
+				}
+
+				NodesInQueue[update.MyAddress] = struct{}{}
+				NodesInQueue[update.WaiterChan] = struct{}{}
+				return
+			}
+
+			//Adicionamos este à frente da lista onde já está o Node B
+			if firstQueue == -1 {
+				if pointingToFirst == -1 {
+					Queues[secondQueue] = append([]elements.Node{update}, Queues[secondQueue]...)
+				} else {
+					Queues[pointingToFirst] = append(Queues[pointingToFirst], update)
+					Queues[pointingToFirst] = append(Queues[pointingToFirst], Queues[secondQueue]...)
+				}
+				return
+			}
+
+			//Chegou informação que há uma junção da fila A com a B, mas a B ainda não existe
+			if secondQueue == -1 {
+				Queues[firstQueue] = append(Queues[firstQueue], temp)
+				NodesInQueue[update.WaiterChan] = struct{}{}
+				return
+			}
+
 		}
 
 		if firstQueue == -1 || secondQueue == -1 {
-
-			var temp elements.Node
-			foundSecond := false
-
-			if valueInterface, ok := Nodes.Load(update.MyAddress); ok {
-				temp, _ = valueInterface.(elements.Node)
-				foundSecond = true
-			}
-			if firstQueue == -1 {
-				for i, queue := range Queues {
-					if queue[len(queue)-1].WaiterChan == update.MyAddress {
-						Queues[i] = append(Queues[i], update)
-						if foundSecond {
-							Queues[i] = append(Queues[i], temp)
-							foundSecond = false
-						}
-					}
-				}
-			}
-			if secondQueue == -1 && foundSecond && firstQueue != -1 {
-				Queues[firstQueue] = append(Queues[firstQueue], temp)
-			}
-
-			fmt.Printf("IMPOSSÍVEL %d:%s %d:%s\n", firstQueue, update.WaiterChan, secondQueue, update.MyAddress)
+			fmt.Printf("ERR: Concatenating %s (%d)  -  %s(%d)\n", update.MyAddress, firstQueue, update.WaiterChan, secondQueue)
 			return
 		}
 		Queues[firstQueue] = append(Queues[firstQueue], Queues[secondQueue]...)
@@ -265,6 +311,13 @@ func updateQueues(update elements.Node, valueInterface interface{}) {
 
 		break
 	case 4:
+		// Se já está na Queue podemos ignorar
+		if _, isInTable := NodesInQueue[update.MyAddress]; isInTable {
+			return
+		}
+
+		NodesInQueue[update.MyAddress] = struct{}{}
+
 		for i, queue := range Queues {
 			if queue[len(queue)-1].WaiterChan == update.MyAddress {
 				Queues[i] = append(Queues[i], update)
