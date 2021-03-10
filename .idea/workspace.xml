@@ -24,6 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bd086d41-62fe-4763-9b46-54eb6541bfb8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/assets/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/assets/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualization/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/controller.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

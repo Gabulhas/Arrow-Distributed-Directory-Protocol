@@ -21,18 +21,19 @@ var requestHistory []string
 var queueHistory []string
 var ownerHistory []string
 var Queues [][]elements.Node
+var currentOwner elements.Node
 var QueuesMutex = &sync.RWMutex{}
-var ChangeChannel chan elements.NodeChange
+var ChangeChannel chan elements.Node
 
 //Lookup table
-var NodesInQueue map[string]struct{}
+var NodesInQueue map[string]int
 
 //Debug
 var totalQueuesPrinted = 0
 
 func init() {
-	ChangeChannel = make(chan elements.NodeChange, 200)
-	NodesInQueue = make(map[string]struct{})
+	ChangeChannel = make(chan elements.Node, 40)
+	NodesInQueue = make(map[string]int)
 	go nodeChange()
 }
 
@@ -113,13 +114,12 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	update.Link = re.ReplaceAllString(update.Link, ``)
 	update.WaiterChan = re.ReplaceAllString(update.WaiterChan, ``)
 
-	previousInterface, _ := Nodes.Load(update.MyAddress)
 	Nodes.Store(update.MyAddress, update)
 
 	json.NewEncoder(w).Encode("Successful")
 
 	if update.Type != 2 {
-		ChangeChannel <- elements.NodeChange{Update: update, Previous: previousInterface}
+		ChangeChannel <- update
 	}
 }
 
@@ -159,7 +159,7 @@ func nodeChange() {
 		select {
 		case newChange := <-ChangeChannel:
 			QueuesMutex.Lock()
-			updateQueues(newChange.Update, newChange.Previous)
+			updateQueues(newChange)
 			QueuesMutex.Unlock()
 
 			//TODO: apenas para debug
@@ -175,163 +175,169 @@ func nodeChange() {
 
 //TODO: Limpar o código e dividir entre controller, queue e graph (ficheiros)
 
-func updateQueues(update elements.Node, valueInterface interface{}) {
+func updateQueues(update elements.Node) {
 
-	previous, ok := valueInterface.(elements.Node)
+	fmt.Printf("(%d, %s -> %s)", update.Type, update.MyAddress, update.WaiterChan)
 
 	switch update.Type {
-	case 0:
-		if !ok {
-			return
-		}
-
-		if previous.Type == 3 {
-			for i, queue := range Queues {
-				if queue[0].MyAddress == update.MyAddress {
-					if len(queue) > 1 {
-						Queues[i] = Queues[i][1:]
-					}
-					return
-				}
-			}
-
-		}
-		if previous.Type == 1 {
-			for i, queue := range Queues {
-				if queue[0].MyAddress == update.MyAddress {
-					temp := queue[1:]
-					Queues[i] = Queues[0]
-					Queues[0] = temp
-					return
-				}
-			}
-		}
-		if previous.Type == 0 {
-
-			for i, queue := range Queues {
-				if queue[0].MyAddress == update.WaiterChan {
-					temp := queue
-					Queues[i] = Queues[0]
-					Queues[0] = temp
-					return
-				}
-			}
-		}
-		//Remove from lookuptable
-		delete(NodesInQueue, update.MyAddress)
-
-		break
-	case 1:
-		for i, queue := range Queues {
-			if queue[0].MyAddress == update.MyAddress {
-				if len(queue) == 1 {
-					Queues = removeFromQueue(Queues, i)
-				} else {
-					Queues[i] = Queues[i][1:]
-				}
-			}
-		}
-		break
-	case 3:
-		if !ok {
-			return
-		}
-		if previous.Type == 3 {
-			return
-		}
-
-		var temp elements.Node
-		if valueInterface, ok := Nodes.Load(update.WaiterChan); ok {
-			temp, _ = valueInterface.(elements.Node)
-		}
-
-		firstQueue := -1
-		secondQueue := -1
-		pointingToFirst := -1
-		secondPoinintTo := -1
-
-		for i, queue := range Queues {
-			if queue[len(queue)-1].MyAddress == update.MyAddress {
-				firstQueue = i
-			}
-			if queue[0].MyAddress == update.WaiterChan {
-				secondQueue = i
-			}
-			if queue[len(queue)-1].WaiterChan == update.MyAddress {
-				pointingToFirst = i
-			}
-			if queue[0].MyAddress == temp.WaiterChan {
-			}
-		}
-		if firstQueue == -1 || secondQueue == -1 {
-			fmt.Printf("IMPOSSÍVEL %d:%s %d:%s\n", firstQueue, update.MyAddress, secondQueue, update.WaiterChan)
-
-			//ver se alguém aponta para o novo update
-
-			// Chegou info. que o Node mudou mas ainda não chegou a informação que passou a ser Waiter
-			//Adicionamos uma Queue com os dois
-			if firstQueue == -1 && secondQueue == -1 {
-				if pointingToFirst == -1 {
-					Queues = append(Queues, []elements.Node{update, temp})
-				} else {
-					Queues[pointingToFirst] = append(Queues[pointingToFirst], update, temp)
-				}
-
-				NodesInQueue[update.MyAddress] = struct{}{}
-				NodesInQueue[update.WaiterChan] = struct{}{}
-				return
-			}
-
-			//Adicionamos este à frente da lista onde já está o Node B
-			if firstQueue == -1 {
-				if pointingToFirst == -1 {
-					Queues[secondQueue] = append([]elements.Node{update}, Queues[secondQueue]...)
-				} else {
-					Queues[pointingToFirst] = append(Queues[pointingToFirst], update)
-					Queues[pointingToFirst] = append(Queues[pointingToFirst], Queues[secondQueue]...)
-				}
-				return
-			}
-
-			//Chegou informação que há uma junção da fila A com a B, mas a B ainda não existe
-			if secondQueue == -1 {
-				Queues[firstQueue] = append(Queues[firstQueue], temp)
-				NodesInQueue[update.WaiterChan] = struct{}{}
-				return
-			}
-
-		}
-
-		if firstQueue == -1 || secondQueue == -1 {
-			fmt.Printf("ERR: Concatenating %s (%d)  -  %s(%d)\n", update.MyAddress, firstQueue, update.WaiterChan, secondQueue)
-			return
-		}
-		Queues[firstQueue] = append(Queues[firstQueue], Queues[secondQueue]...)
-		Queues = removeFromQueue(Queues, secondQueue)
-
-		break
 	case 4:
-		// Se já está na Queue podemos ignorar
-		if _, isInTable := NodesInQueue[update.MyAddress]; isInTable {
+		if _, isIn := NodesInQueue[update.MyAddress]; isIn {
 			return
 		}
-
-		NodesInQueue[update.MyAddress] = struct{}{}
-
+		NodesInQueue[update.MyAddress] = update.Type
 		for i, queue := range Queues {
+			if len(queue) == 0 {
+				continue
+			}
 			if queue[len(queue)-1].WaiterChan == update.MyAddress {
 				Queues[i] = append(Queues[i], update)
 				return
 			}
 		}
 		Queues = append(Queues, []elements.Node{update})
+
+		break
+	case 3:
+		if tipo, ok := NodesInQueue[update.MyAddress]; ok && tipo == 3 {
+			return
+		}
+
+		_, IsNodeAIn := NodesInQueue[update.MyAddress]
+		typeValue, IsNodeBIn := NodesInQueue[update.WaiterChan]
+
+		NodesInQueue[update.MyAddress] = update.Type
+		NodesInQueue[update.WaiterChan] = typeValue
+		fmt.Printf("A: %t, B:%t", IsNodeAIn, IsNodeBIn)
+
+		NodesInQueue[update.MyAddress] = update.Type
+
+		nextInterface, _ := Nodes.Load(update.WaiterChan)
+		nextNode := nextInterface.(elements.Node)
+
+		//TODO: Mudar IFS
+
+		if IsNodeAIn && IsNodeBIn {
+			firstQueue := -1
+			secondQueue := -1
+			for i, queue := range Queues {
+				if queue[len(queue)-1].MyAddress == update.MyAddress {
+					firstQueue = i
+				} else if queue[0].MyAddress == update.WaiterChan {
+					secondQueue = i
+				}
+			}
+			if secondQueue == -1 || firstQueue == -1 {
+				return
+			}
+			Queues[firstQueue] = append(Queues[firstQueue], Queues[secondQueue]...)
+			removeFromQueues(secondQueue)
+			return
+
+		}
+
+		if IsNodeAIn && !IsNodeBIn {
+			for i, queue := range Queues {
+				if queue[len(queue)-1].MyAddress == update.MyAddress {
+					Queues[i] = append(Queues[i], nextNode)
+					return
+				}
+			}
+		}
+
+		if !IsNodeAIn && IsNodeBIn {
+			for i, queue := range Queues {
+				if queue[0].MyAddress == update.WaiterChan {
+					Queues[i] = append([]elements.Node{update}, Queues[i]...)
+					return
+				}
+			}
+		}
+
+		if !IsNodeAIn && !IsNodeBIn {
+
+			currentQueue := []elements.Node{update, nextNode}
+
+			currentQueueLocation := -1
+
+			for i, queue := range Queues {
+
+				//TODO: limpar estes IFs
+				if queue[len(queue)-1].WaiterChan == update.MyAddress {
+					if currentQueueLocation == -1 {
+						Queues[i] = append(Queues[i], currentQueue...)
+						currentQueueLocation = i
+					} else {
+						Queues[i] = append(Queues[i], Queues[currentQueueLocation]...)
+						removeFromQueues(currentQueueLocation)
+					}
+				} else if nextNode.WaiterChan == queue[0].MyAddress {
+					if currentQueueLocation == -1 {
+						Queues[i] = append(currentQueue, Queues[i]...)
+						currentQueueLocation = i
+					} else {
+						Queues[currentQueueLocation] = append(Queues[currentQueueLocation], Queues[i]...)
+						removeFromQueues(i)
+					}
+				}
+
+			}
+			if currentQueueLocation == -1 {
+				Queues = append(Queues, currentQueue)
+			}
+		}
+
+		break
+
+	case 1:
+		foundNodeQueue := -1
+		currentOwner = update
+		for i, queue := range Queues {
+			if queue[0].MyAddress == update.MyAddress {
+				foundNodeQueue = i
+			}
+		}
+		if foundNodeQueue == -1 {
+			return
+		}
+
+		if len(Queues[foundNodeQueue]) == 1 {
+			removeFromQueues(foundNodeQueue)
+		} else {
+			Queues[foundNodeQueue] = Queues[foundNodeQueue][1:]
+		}
+		delete(NodesInQueue, update.MyAddress)
+
+		break
+	case 0:
+
+		delete(NodesInQueue, update.MyAddress)
+		currentOwner = update
+		for i, queue := range Queues {
+			if queue[0].MyAddress == update.MyAddress {
+				if len(queue) > 1 {
+					Queues[i] = Queues[i][1:]
+					temp := queue[1:]
+					Queues[i] = Queues[0]
+					Queues[0] = temp
+					return
+				} else {
+					removeFromQueues(i)
+				}
+			} else if queue[0].MyAddress == update.WaiterChan {
+				temp := queue
+				Queues[i] = Queues[0]
+				Queues[0] = temp
+			}
+		}
+
+		fmt.Println("Impossible case, OWR not (pointing to) head")
 		break
 	}
 
 }
 
-func removeFromQueue(queue [][]elements.Node, i int) [][]elements.Node {
-	return append(queue[:i], queue[i+1:]...)
+func removeFromQueues(i int) {
+	Queues = append(Queues[:i], Queues[i+1:]...)
 }
 
 func queue(w http.ResponseWriter, r *http.Request) {
@@ -344,7 +350,8 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	var QueueNodesAddresses []string
 
 	QueuesMutex.RLock()
-	if len(Queues) > 0 {
+
+	if len(Queues) > 0 && Queues[0][0].MyAddress == currentOwner.WaiterChan {
 		for _, node := range Queues[0] {
 			QueueNodesAddresses = append(QueueNodesAddresses, node.MyAddress)
 		}
@@ -352,77 +359,7 @@ func queue(w http.ResponseWriter, r *http.Request) {
 	QueuesMutex.RUnlock()
 	response.QueueNodes = QueueNodesAddresses
 	response.Requesting = requestHistory
-	/*
-		requestHistory = nil
-
-		Nodes.Range(func(key, value interface{}) bool {
-			node := value.(elements.Node)
-			if node.Type < 2 {
-				currentOwner = node.MyAddress
-			}
-			return true
-		},
-		)
-
-	*/
-	/*
-		for _, node := range Nodes {
-			if node.Type < 2 {
-				currentOwner = node.MyAddress
-			}
-		}
-	*/
-
-	/*
-		response.OwnerHistory = ownerHistory
-		response.CurrentOwner = currentOwner
-		tempStruct, _ := Nodes.Load(currentOwner)
-
-		currentNode = tempStruct.(elements.Node)
-
-		//fmt.Println("currentNode", currentNode)
-		if currentOwner == "" {
-			return
-		}
-
-		for currentNode.WaiterChan != "" {
-			tempStruct, _ := Nodes.Load(re.ReplaceAllString(currentNode.WaiterChan, ``))
-			nextNode = tempStruct.(elements.Node)
-
-			response.QueueNodes = append(response.QueueNodes, nextNode.MyAddress)
-			currentNode = nextNode
-		}
-
-		//dever haver algoritmo mais simples que este
-		pivot := 0
-		flag := true
-		for i := 0; i < len(queueHistory); i++ {
-			if pivot < len(response.QueueNodes) {
-				if queueHistory[i] == response.QueueNodes[pivot] {
-					pivot = i
-					flag = false
-					break
-				}
-			}
-		}
-
-		startPoint := len(queueHistory) - pivot
-
-		if flag {
-			startPoint = 0
-		}
-
-		for i := startPoint; i < len(response.QueueNodes); i++ {
-			response.QueueHistory = append(response.QueueHistory, response.QueueNodes[i])
-		}
-		/*
-		fmt.Println(queueHistory)
-		fmt.Println(response.QueueNodes)
-		fmt.Println("------------------------------------")
-				ownerHistory = nil
-				queueHistory = response.QueueNodes
-	*/
-
+	response.CurrentOwner = currentOwner.MyAddress
 	json.NewEncoder(w).Encode(response)
 }
 

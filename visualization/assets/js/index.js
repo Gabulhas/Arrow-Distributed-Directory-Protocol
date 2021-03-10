@@ -288,7 +288,6 @@ function clearHistory() {
 
 function freeze() {
     if (frozen) {
-        frozen = false
         document.getElementById('freezebutton').textContent = 'Freeze'
         clearHistory()
     } else {
@@ -387,7 +386,10 @@ d3.interval(function () {
         return
     }
     getData()
-    getQueue()
     restart()
-    updateQueue()
 }, 30)
+
+d3.interval(function () {
+    getQueue()
+    updateQueue()
+}, 50)
