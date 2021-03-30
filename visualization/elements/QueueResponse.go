@@ -6,4 +6,5 @@ type QueueResponse struct {
 	Requesting   []string `json:"requesting"`
 	QueueHistory []string `json:"queue_history"`
 	CurrentOwner string   `json:"current_owner"`
+	QueueNumber  int      `json:"queue_number"`
 }

@@ -17,23 +17,23 @@ import (
 //TODO: Mudar para package
 //TODO: dividir as funções em vários ficheiros
 var re = regexp.MustCompile(`http://|/find|/myChan`)
-var requestHistory []string
-var queueHistory []string
-var ownerHistory []string
+var requestHistoryBuffer []string
+var queueHistoryBuffer []string
+var previousMainLast string
 var Queues [][]elements.Node
 var currentOwner elements.Node
 var QueuesMutex = &sync.RWMutex{}
 var ChangeChannel chan elements.Node
 
 //Lookup table
-var NodesInQueue map[string]int
+var NodesInQueues map[string]int
 
 //Debug
 var totalQueuesPrinted = 0
 
 func init() {
 	ChangeChannel = make(chan elements.Node, 40)
-	NodesInQueue = make(map[string]int)
+	NodesInQueues = make(map[string]int)
 	go nodeChange()
 }
 
@@ -117,10 +117,12 @@ func updateState(w http.ResponseWriter, r *http.Request) {
 	Nodes.Store(update.MyAddress, update)
 
 	json.NewEncoder(w).Encode("Successful")
+	go func(newUpdate elements.Node) {
+		if newUpdate.Type != 2 {
+			ChangeChannel <- newUpdate
+		}
+	}(update)
 
-	if update.Type != 2 {
-		ChangeChannel <- update
-	}
 }
 
 func OtherPrintQueue(queues [][]elements.Node) string {
@@ -159,11 +161,36 @@ func nodeChange() {
 		select {
 		case newChange := <-ChangeChannel:
 			QueuesMutex.Lock()
+			if newChange.Type == 4 {
+				requestHistoryBuffer = append(requestHistoryBuffer, newChange.MyAddress)
+			}
 			updateQueues(newChange)
 			QueuesMutex.Unlock()
 
-			//TODO: apenas para debug
+			if previousMainLast == "" {
+				previousMainLast = currentOwner.MyAddress
+			}
+
 			QueuesMutex.RLock()
+
+			//Se a primeira queue é a principal
+			if len(Queues) > 0 && Queues[0][0].MyAddress == currentOwner.WaiterChan {
+				var newNodesInQueue []string
+				for i := len(Queues[0]) - 1; i >= 0; i-- {
+					if Queues[0][i].MyAddress == previousMainLast {
+						break
+					}
+					newNodesInQueue = append(newNodesInQueue, Queues[0][i].MyAddress)
+				}
+				if len(newNodesInQueue) != 0 {
+					previousMainLast = newNodesInQueue[0]
+					for i := len(newNodesInQueue) - 1; i >= 0; i-- {
+						queueHistoryBuffer = append(queueHistoryBuffer, newNodesInQueue[i])
+					}
+				}
+			}
+
+			//TODO: apenas para debug
 			totalQueuesPrinted = totalQueuesPrinted + 1
 			PrettyPrintQueue(Queues)
 			AllUpdates = append(AllUpdates, OtherPrintQueue(Queues))
@@ -181,10 +208,10 @@ func updateQueues(update elements.Node) {
 
 	switch update.Type {
 	case 4:
-		if _, isIn := NodesInQueue[update.MyAddress]; isIn {
+		if _, isIn := NodesInQueues[update.MyAddress]; isIn {
 			return
 		}
-		NodesInQueue[update.MyAddress] = update.Type
+		NodesInQueues[update.MyAddress] = update.Type
 		for i, queue := range Queues {
 			if len(queue) == 0 {
 				continue
@@ -198,18 +225,18 @@ func updateQueues(update elements.Node) {
 
 		break
 	case 3:
-		if tipo, ok := NodesInQueue[update.MyAddress]; ok && tipo == 3 {
+		if tipo, ok := NodesInQueues[update.MyAddress]; ok && tipo == 3 {
 			return
 		}
 
-		_, IsNodeAIn := NodesInQueue[update.MyAddress]
-		typeValue, IsNodeBIn := NodesInQueue[update.WaiterChan]
+		_, IsNodeAIn := NodesInQueues[update.MyAddress]
+		typeValue, IsNodeBIn := NodesInQueues[update.WaiterChan]
 
-		NodesInQueue[update.MyAddress] = update.Type
-		NodesInQueue[update.WaiterChan] = typeValue
+		NodesInQueues[update.MyAddress] = update.Type
+		NodesInQueues[update.WaiterChan] = typeValue
 		fmt.Printf("A: %t, B:%t", IsNodeAIn, IsNodeBIn)
 
-		NodesInQueue[update.MyAddress] = update.Type
+		NodesInQueues[update.MyAddress] = update.Type
 
 		nextInterface, _ := Nodes.Load(update.WaiterChan)
 		nextNode := nextInterface.(elements.Node)
@@ -305,12 +332,12 @@ func updateQueues(update elements.Node) {
 		} else {
 			Queues[foundNodeQueue] = Queues[foundNodeQueue][1:]
 		}
-		delete(NodesInQueue, update.MyAddress)
+		delete(NodesInQueues, update.MyAddress)
 
 		break
 	case 0:
 
-		delete(NodesInQueue, update.MyAddress)
+		delete(NodesInQueues, update.MyAddress)
 		currentOwner = update
 		for i, queue := range Queues {
 			if queue[0].MyAddress == update.MyAddress {
@@ -356,9 +383,13 @@ func queue(w http.ResponseWriter, r *http.Request) {
 			QueueNodesAddresses = append(QueueNodesAddresses, node.MyAddress)
 		}
 	}
+	response.QueueHistory = queueHistoryBuffer
+	queueHistoryBuffer = nil
+	response.Requesting = requestHistoryBuffer
+	requestHistoryBuffer = nil
+	response.QueueNumber = len(Queues)
 	QueuesMutex.RUnlock()
 	response.QueueNodes = QueueNodesAddresses
-	response.Requesting = requestHistory
 	response.CurrentOwner = currentOwner.MyAddress
 	json.NewEncoder(w).Encode(response)
 }

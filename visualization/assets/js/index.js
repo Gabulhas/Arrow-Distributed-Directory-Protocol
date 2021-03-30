@@ -354,6 +354,8 @@ function getQueue() {
             addListToTableId(data.queue_history, 'queue_history')
         }
 
+        document.getElementById("totalQueues").textContent = 'Total Queues: ' + data.queue_number
+
 
     })
 
