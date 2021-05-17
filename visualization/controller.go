@@ -372,8 +372,6 @@ func queue(w http.ResponseWriter, r *http.Request) {
 
 	response := new(elements.QueueResponse)
 
-	//var currentNode elements.Node
-	//var nextNode elements.Node
 	var QueueNodesAddresses []string
 
 	QueuesMutex.RLock()
