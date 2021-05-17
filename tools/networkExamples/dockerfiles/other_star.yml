@@ -1,0 +1,1108 @@
+
+version: "3.8"
+services:
+
+
+  node_0:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8001
+      type: 1 
+      link: 127.0.0.1:8000
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_1:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8002
+      type: 2 
+      link: 127.0.0.1:8001
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_2:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8003
+      type: 2 
+      link: 127.0.0.1:8002
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_3:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8004
+      type: 2 
+      link: 127.0.0.1:8003
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_4:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8005
+      type: 2 
+      link: 127.0.0.1:8004
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_5:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8006
+      type: 2 
+      link: 127.0.0.1:8003
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_6:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8007
+      type: 2 
+      link: 127.0.0.1:8006
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_7:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8008
+      type: 2 
+      link: 127.0.0.1:8002
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_8:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8009
+      type: 2 
+      link: 127.0.0.1:8008
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_9:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8010
+      type: 2 
+      link: 127.0.0.1:8009
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_10:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8011
+      type: 2 
+      link: 127.0.0.1:8008
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_11:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8012
+      type: 2 
+      link: 127.0.0.1:8011
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_12:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8013
+      type: 2 
+      link: 127.0.0.1:8002
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_13:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8014
+      type: 2 
+      link: 127.0.0.1:8013
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_14:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8015
+      type: 2 
+      link: 127.0.0.1:8014
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_15:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8016
+      type: 2 
+      link: 127.0.0.1:8013
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_16:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8017
+      type: 2 
+      link: 127.0.0.1:8016
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_17:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8018
+      type: 2 
+      link: 127.0.0.1:8001
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_18:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8019
+      type: 2 
+      link: 127.0.0.1:8018
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_19:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8020
+      type: 2 
+      link: 127.0.0.1:8019
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_20:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8021
+      type: 2 
+      link: 127.0.0.1:8020
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_21:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8022
+      type: 2 
+      link: 127.0.0.1:8019
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_22:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8023
+      type: 2 
+      link: 127.0.0.1:8022
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_23:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8024
+      type: 2 
+      link: 127.0.0.1:8018
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_24:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8025
+      type: 2 
+      link: 127.0.0.1:8024
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_25:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8026
+      type: 2 
+      link: 127.0.0.1:8025
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_26:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8027
+      type: 2 
+      link: 127.0.0.1:8024
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_27:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8028
+      type: 2 
+      link: 127.0.0.1:8027
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_28:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8029
+      type: 2 
+      link: 127.0.0.1:8018
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_29:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8030
+      type: 2 
+      link: 127.0.0.1:8029
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_30:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8031
+      type: 2 
+      link: 127.0.0.1:8030
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_31:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8032
+      type: 2 
+      link: 127.0.0.1:8029
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_32:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8033
+      type: 2 
+      link: 127.0.0.1:8032
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_33:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8034
+      type: 2 
+      link: 127.0.0.1:8001
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_34:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8035
+      type: 2 
+      link: 127.0.0.1:8034
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_35:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8036
+      type: 2 
+      link: 127.0.0.1:8035
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_36:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8037
+      type: 2 
+      link: 127.0.0.1:8036
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_37:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8038
+      type: 2 
+      link: 127.0.0.1:8035
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_38:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8039
+      type: 2 
+      link: 127.0.0.1:8038
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_39:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8040
+      type: 2 
+      link: 127.0.0.1:8034
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_40:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8041
+      type: 2 
+      link: 127.0.0.1:8040
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_41:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8042
+      type: 2 
+      link: 127.0.0.1:8041
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_42:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8043
+      type: 2 
+      link: 127.0.0.1:8040
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_43:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8044
+      type: 2 
+      link: 127.0.0.1:8043
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_44:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8045
+      type: 2 
+      link: 127.0.0.1:8034
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_45:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8046
+      type: 2 
+      link: 127.0.0.1:8045
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_46:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8047
+      type: 2 
+      link: 127.0.0.1:8046
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_47:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8048
+      type: 2 
+      link: 127.0.0.1:8045
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_48:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8049
+      type: 2 
+      link: 127.0.0.1:8048
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_49:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8050
+      type: 2 
+      link: 127.0.0.1:8001
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_50:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8051
+      type: 2 
+      link: 127.0.0.1:8050
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_51:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8052
+      type: 2 
+      link: 127.0.0.1:8051
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_52:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8053
+      type: 2 
+      link: 127.0.0.1:8052
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_53:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8054
+      type: 2 
+      link: 127.0.0.1:8051
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_54:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8055
+      type: 2 
+      link: 127.0.0.1:8054
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_55:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8056
+      type: 2 
+      link: 127.0.0.1:8050
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_56:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8057
+      type: 2 
+      link: 127.0.0.1:8056
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_57:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8058
+      type: 2 
+      link: 127.0.0.1:8057
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_58:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8059
+      type: 2 
+      link: 127.0.0.1:8056
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_59:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8060
+      type: 2 
+      link: 127.0.0.1:8059
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_60:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8061
+      type: 2 
+      link: 127.0.0.1:8050
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_61:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8062
+      type: 2 
+      link: 127.0.0.1:8061
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_62:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8063
+      type: 2 
+      link: 127.0.0.1:8062
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_63:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8064
+      type: 2 
+      link: 127.0.0.1:8061
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
+
+
+  node_64:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      address: 127.0.0.1:8065
+      type: 2 
+      link: 127.0.0.1:8064
+      VIS_ADDRESS: 127.0.0.1:8000/updateState
+      requests: "true"
+    network_mode: host
+
+
